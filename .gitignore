@@ -1,0 +1,14 @@
+.env
+.DS_Store
+node_modules/
+.venv/
+coverage/
+*.log
+!report/evidence/checks.log
+!report/evidence/backup-build.log
+!report/evidence/local-startup.log
+!report/evidence/local-smoke.log
+!report/evidence/recovery-run.log
+.pytest_cache/
+__pycache__/
+*.py[cod]

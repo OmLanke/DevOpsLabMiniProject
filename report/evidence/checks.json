@@ -1,0 +1,114 @@
+{
+  "date_utc": "2026-10-14T05:54:37.003947+00:00",
+  "results": [
+    {
+      "check": "API syntax",
+      "command": [
+        "npm",
+        "run",
+        "lint"
+      ],
+      "exit_code": 0,
+      "seconds": 0.301
+    },
+    {
+      "check": "API tests",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit_code": 0,
+      "seconds": 0.321
+    },
+    {
+      "check": "API dependency audit",
+      "command": [
+        "npm",
+        "audit",
+        "--omit=dev"
+      ],
+      "exit_code": 0,
+      "seconds": 0.681
+    },
+    {
+      "check": "Backup and restore safety tests",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "backup/tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "seconds": 1.701
+    },
+    {
+      "check": "Compose configuration",
+      "command": [
+        "docker",
+        "compose",
+        "--env-file",
+        ".env.example",
+        "config",
+        "--quiet"
+      ],
+      "exit_code": 0,
+      "seconds": 0.219
+    },
+    {
+      "check": "Bash syntax",
+      "command": [
+        "bash",
+        "-n",
+        "scripts/integration.sh",
+        "scripts/demo.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.004
+    },
+    {
+      "check": "POSIX shell syntax",
+      "command": [
+        "sh",
+        "-n",
+        "scripts/backup.sh",
+        "scripts/list-backups.sh",
+        "scripts/restore.sh"
+      ],
+      "exit_code": 0,
+      "seconds": 0.005
+    },
+    {
+      "check": "Node version",
+      "command": [
+        "node",
+        "--version"
+      ],
+      "exit_code": 0,
+      "seconds": 0.03
+    },
+    {
+      "check": "Docker version",
+      "command": [
+        "docker",
+        "version",
+        "--format",
+        "{{.Server.Version}}"
+      ],
+      "exit_code": 0,
+      "seconds": 0.199
+    },
+    {
+      "check": "Compose version",
+      "command": [
+        "docker",
+        "compose",
+        "version"
+      ],
+      "exit_code": 0,
+      "seconds": 0.08
+    }
+  ]
+}

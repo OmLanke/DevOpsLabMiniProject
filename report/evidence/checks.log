@@ -1,0 +1,80 @@
+API syntax
+$ npm run lint
+
+> devops-notes-api@1.0.0 lint
+> node --check src/app.js && node --check src/server.js && node --check test/app.test.js
+
+
+
+API tests
+$ npm test
+
+> devops-notes-api@1.0.0 test
+> node --test
+
+✔ health checks database connectivity and reports unavailable cleanly (5.495792ms)
+✔ notes CRUD works and invalid input and database errors are safe (11.296625ms)
+✔ malformed JSON is rejected (1.491708ms)
+✔ oversized JSON is rejected (1.31425ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 165.212083
+
+
+API dependency audit
+$ npm audit --omit=dev
+found 0 vulnerabilities
+
+
+Backup and restore safety tests
+$ python3 -m unittest discover -s backup/tests -v
+test_backup_uploads_unique_dump_and_manifest_with_checksum (test_backup.BackupTests.test_backup_uploads_unique_dump_and_manifest_with_checksum) ... ok
+test_checksum_failure_never_calls_pg_restore (test_backup.BackupTests.test_checksum_failure_never_calls_pg_restore) ... ok
+test_dump_download_failure_never_calls_pg_restore (test_backup.BackupTests.test_dump_download_failure_never_calls_pg_restore) ... ok
+test_dump_failure_uploads_nothing (test_backup.BackupTests.test_dump_failure_uploads_nothing) ... ok
+test_invalid_manifest_metadata_never_calls_pg_restore (test_backup.BackupTests.test_invalid_manifest_metadata_never_calls_pg_restore) ... ok
+test_list_paginates_and_shows_only_complete_pairs_newest_first (test_backup.BackupTests.test_list_paginates_and_shows_only_complete_pairs_newest_first) ... ok
+test_manifest_must_match_expected_key (test_backup.BackupTests.test_manifest_must_match_expected_key) ... ok
+test_manifest_upload_failure_removes_dump_and_propagates (test_backup.BackupTests.test_manifest_upload_failure_removes_dump_and_propagates) ... ok
+test_object_keys_cannot_escape_backup_prefix (test_backup.BackupTests.test_object_keys_cannot_escape_backup_prefix) ... ok
+test_valid_restore_is_transactional_and_fails_on_sql_errors (test_backup.BackupTests.test_valid_restore_is_transactional_and_fails_on_sql_errors) ... ok
+test_cancelled_confirmation_does_not_stop_services (test_restore_wrapper.RestoreWrapperTests.test_cancelled_confirmation_does_not_stop_services) ... ok
+test_initially_stopped_services_stay_stopped (test_restore_wrapper.RestoreWrapperTests.test_initially_stopped_services_stay_stopped) ... ok
+test_running_app_and_worker_restart_after_success_or_failure (test_restore_wrapper.RestoreWrapperTests.test_running_app_and_worker_restart_after_success_or_failure) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 1.587s
+
+OK
+
+
+Compose configuration
+$ docker compose --env-file .env.example config --quiet
+
+
+Bash syntax
+$ bash -n scripts/integration.sh scripts/demo.sh
+
+
+POSIX shell syntax
+$ sh -n scripts/backup.sh scripts/list-backups.sh scripts/restore.sh
+
+
+Node version
+$ node --version
+v24.21.0
+
+
+Docker version
+$ docker version --format {{.Server.Version}}
+29.4.0
+
+
+Compose version
+$ docker compose version
+Docker Compose version v5.1.2

@@ -1,0 +1,485 @@
+ Image devopslabminiproject-backup Building 
+ Image devopslabminiproject-app Building 
+ Image devopslabminiproject-minio Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.66kB done
+#1 DONE 0.0s
+
+#2 [minio internal] load build definition from Dockerfile
+#2 transferring dockerfile: 880B done
+#2 DONE 0.0s
+
+#3 [backup internal] load build definition from Dockerfile
+#3 transferring dockerfile: 465B done
+#3 DONE 0.0s
+
+#4 [app internal] load build definition from Dockerfile
+#4 transferring dockerfile: 183B done
+#4 DONE 0.1s
+
+#5 [minio internal] load metadata for docker.io/library/alpine:3.22
+#5 DONE 0.1s
+
+#6 [backup internal] load metadata for docker.io/library/postgres:17-bookworm
+#6 DONE 0.0s
+
+#7 [backup internal] load .dockerignore
+#7 transferring context: 64B done
+#7 DONE 0.0s
+
+#8 [backup internal] load build context
+#8 transferring context: 8.93kB done
+#8 DONE 0.0s
+
+#9 [backup 1/4] FROM docker.io/library/postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826
+#9 resolve docker.io/library/postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826 0.0s done
+#9 DONE 0.4s
+
+#10 [app internal] load metadata for docker.io/library/node:24-alpine
+#10 DONE 1.0s
+
+#11 [minio internal] load metadata for docker.io/library/golang:1.24-alpine
+#11 DONE 1.0s
+
+#12 [minio internal] load .dockerignore
+#12 transferring context: 2B done
+#12 DONE 0.0s
+
+#13 [minio build 3/4] ADD --checksum=sha256:484788a73bd0b93e1c99ca3e7b3c2584e9936986da857dca8a1d1a9fe4418d3b https://codeload.github.com/minio/minio/tar.gz/refs/tags/RELEASE.2025-02-07T23-21-09Z /tmp/minio.tar.gz
+#13 DONE 0.0s
+
+#14 [app internal] load .dockerignore
+#14 transferring context: 64B done
+#14 DONE 0.1s
+
+#15 [minio stage-1 1/4] FROM docker.io/library/alpine:3.22@sha256:5291449c3df73caf6ed85e649dec1b9e818b39a5d8c871e97afc13e9cd5e8fa8
+#15 resolve docker.io/library/alpine:3.22@sha256:5291449c3df73caf6ed85e649dec1b9e818b39a5d8c871e97afc13e9cd5e8fa8 0.1s done
+#15 DONE 0.1s
+
+#16 [minio build 1/4] FROM docker.io/library/golang:1.24-alpine@sha256:8bee1901f1e530bfb4a7850aa7a479d17ae3a18beb6e09064ed54cfd245b7191
+#16 resolve docker.io/library/golang:1.24-alpine@sha256:8bee1901f1e530bfb4a7850aa7a479d17ae3a18beb6e09064ed54cfd245b7191 0.1s done
+#16 DONE 0.1s
+
+#17 [minio stage-1 3/4] COPY --from=build /minio /usr/local/bin/minio
+#17 CACHED
+
+#18 [minio build 2/4] WORKDIR /src
+#18 CACHED
+
+#19 [minio build 3/4] ADD --checksum=sha256:484788a73bd0b93e1c99ca3e7b3c2584e9936986da857dca8a1d1a9fe4418d3b https://codeload.github.com/minio/minio/tar.gz/refs/tags/RELEASE.2025-02-07T23-21-09Z /tmp/minio.tar.gz
+#19 CACHED
+
+#20 [minio build 4/4] RUN tar -xzf /tmp/minio.tar.gz --strip-components=1     && CGO_ENABLED=0 go build -trimpath        -ldflags='-s -w -X github.com/minio/minio/cmd.Version=2025-02-07T23:21:09Z -X github.com/minio/minio/cmd.ReleaseTag=RELEASE.2025-02-07T23-21-09Z'        -o /minio .
+#20 CACHED
+
+#21 [minio stage-1 2/4] RUN apk add --no-cache ca-certificates curl
+#21 CACHED
+
+#22 [minio stage-1 4/4] COPY --from=build /src/LICENSE /licenses/MINIO-LICENSE
+#22 CACHED
+
+#23 [app 1/5] FROM docker.io/library/node:24-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
+#23 resolve docker.io/library/node:24-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 0.1s done
+#23 DONE 0.1s
+
+#24 [minio] exporting to image
+#24 exporting layers done
+#24 exporting manifest sha256:f178e0ae9654aef944148476485be2ec0690a14e47acdb4131463b0e0b174edd 0.0s done
+#24 exporting config sha256:9d415da5338616e9c6ebb9fbca4849b40520777b3d1ad5d7f667049eef630c5b 0.0s done
+#24 exporting attestation manifest sha256:d3499de8a042f10077ba297f63f02ddb58723e1586c34babdb5aeb2b715e76f3 0.0s done
+#24 exporting manifest list sha256:032ea56a68d11b3c81a3755cf6c0605c4885c37726eb4e57d985fe7772040691 0.0s done
+#24 naming to docker.io/library/devopslabminiproject-minio:latest done
+#24 unpacking to docker.io/library/devopslabminiproject-minio:latest done
+#24 DONE 0.2s
+
+#25 [app internal] load build context
+#25 transferring context: 40.38kB done
+#25 DONE 0.1s
+
+#23 [app 1/5] FROM docker.io/library/node:24-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
+#23 DONE 0.2s
+
+#26 [backup 2/4] RUN apt-get update     && apt-get install -y --no-install-recommends python3 python3-venv     && python3 -m venv /opt/backup-venv     && /opt/backup-venv/bin/pip install --no-cache-dir boto3     && rm -rf /var/lib/apt/lists/*
+#26 0.461 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#26 0.622 Get:2 http://apt.postgresql.org/pub/repos/apt bookworm-pgdg InRelease [189 kB]
+#26 ...
+
+#27 [app 2/5] WORKDIR /app
+#27 DONE 0.1s
+
+#28 [minio] resolving provenance for metadata file
+#28 DONE 0.0s
+
+#29 [app 3/5] COPY package*.json ./
+#29 DONE 0.1s
+
+#26 [backup 2/4] RUN apt-get update     && apt-get install -y --no-install-recommends python3 python3-venv     && python3 -m venv /opt/backup-venv     && /opt/backup-venv/bin/pip install --no-cache-dir boto3     && rm -rf /var/lib/apt/lists/*
+#26 0.994 Get:3 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#26 1.288 Get:4 http://deb.debian.org/debian-security bookworm-security InRelease [34.8 kB]
+#26 1.639 Get:5 http://deb.debian.org/debian bookworm/main arm64 Packages [8,689 kB]
+#26 ...
+
+#30 [app 4/5] RUN npm ci --omit=dev
+#30 1.372 
+#30 1.372 added 82 packages, and audited 83 packages in 892ms
+#30 1.372 
+#30 1.372 21 packages are looking for funding
+#30 1.373   run `npm fund` for details
+#30 1.373 
+#30 1.373 found 0 vulnerabilities
+#30 1.374 npm notice
+#30 1.374 npm notice New major version of npm available! 11.19.0 -> 12.2.0
+#30 1.374 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+#30 1.374 npm notice To update run: npm install -g npm@12.2.0
+#30 1.374 npm notice
+#30 DONE 1.5s
+
+#31 [app 5/5] COPY src ./src
+#31 DONE 0.1s
+
+#32 [app] exporting to image
+#32 exporting layers 0.3s done
+#32 exporting manifest sha256:9cc0f57d238b47cfa77d860f3150c7a7d0479981ce7fbad8e23c3e8e8bf3485d
+#32 exporting manifest sha256:9cc0f57d238b47cfa77d860f3150c7a7d0479981ce7fbad8e23c3e8e8bf3485d 0.0s done
+#32 exporting config sha256:1081b732f9c2fcc1e061a600b6546844bf3093e799387665f7733df808b83fbf 0.0s done
+#32 exporting attestation manifest sha256:3c7a46c23082b7c823d2ed2b9be5c309903851e286a8f257b7846a05c33f5c44 0.0s done
+#32 exporting manifest list sha256:78af9f19374bb35ac09e6544571f2a54bd9516f3bbf45faabd9daee4b03d980f done
+#32 naming to docker.io/library/devopslabminiproject-app:latest done
+#32 unpacking to docker.io/library/devopslabminiproject-app:latest
+#32 unpacking to docker.io/library/devopslabminiproject-app:latest 0.2s done
+#32 DONE 0.6s
+
+#26 [backup 2/4] RUN apt-get update     && apt-get install -y --no-install-recommends python3 python3-venv     && python3 -m venv /opt/backup-venv     && /opt/backup-venv/bin/pip install --no-cache-dir boto3     && rm -rf /var/lib/apt/lists/*
+#26 ...
+
+#33 [app] resolving provenance for metadata file
+#33 DONE 0.0s
+
+#26 [backup 2/4] RUN apt-get update     && apt-get install -y --no-install-recommends python3 python3-venv     && python3 -m venv /opt/backup-venv     && /opt/backup-venv/bin/pip install --no-cache-dir boto3     && rm -rf /var/lib/apt/lists/*
+#26 6.936 Get:6 http://apt.postgresql.org/pub/repos/apt bookworm-pgdg/17 arm64 Packages [6,788 B]
+#26 7.153 Get:7 http://apt.postgresql.org/pub/repos/apt bookworm-pgdg/main arm64 Packages [890 kB]
+#26 129.7 Ign:5 http://deb.debian.org/debian bookworm/main arm64 Packages
+#26 130.4 Get:8 http://deb.debian.org/debian bookworm-updates/main arm64 Packages [6,936 B]
+#26 130.5 Get:9 http://deb.debian.org/debian-security bookworm-security/main arm64 Packages [347 kB]
+#26 133.1 Get:5 http://deb.debian.org/debian bookworm/main arm64 Packages [8,689 kB]
+#26 190.8 Ign:5 http://deb.debian.org/debian bookworm/main arm64 Packages
+#26 193.1 Get:5 http://deb.debian.org/debian bookworm/main arm64 Packages [8,689 kB]
+#26 202.6 Fetched 2,188 kB in 3min 22s (10.8 kB/s)
+#26 202.6 Reading package lists...
+#26 203.0 Reading package lists...
+#26 203.4 Building dependency tree...
+#26 203.5 Reading state information...
+#26 203.5 The following additional packages will be installed:
+#26 203.6   ca-certificates libexpat1 libnsl2 libpython3-stdlib libpython3.11-minimal
+#26 203.6   libpython3.11-stdlib libtirpc-common libtirpc3 media-types python3-distutils
+#26 203.6   python3-lib2to3 python3-minimal python3-pip-whl python3-setuptools-whl
+#26 203.6   python3.11 python3.11-minimal python3.11-venv
+#26 203.6 Suggested packages:
+#26 203.6   python3-doc python3-tk python3.11-doc binutils binfmt-support
+#26 203.7 The following NEW packages will be installed:
+#26 203.7   ca-certificates libexpat1 libnsl2 libpython3-stdlib libpython3.11-minimal
+#26 203.7   libpython3.11-stdlib libtirpc-common libtirpc3 media-types python3
+#26 203.7   python3-distutils python3-lib2to3 python3-minimal python3-pip-whl
+#26 203.7   python3-setuptools-whl python3-venv python3.11 python3.11-minimal
+#26 203.7   python3.11-venv
+#26 203.8 0 upgraded, 19 newly installed, 0 to remove and 0 not upgraded.
+#26 203.8 Need to get 8,515 kB of archives.
+#26 203.8 After this operation, 28.6 MB of additional disk space will be used.
+#26 203.8 Get:1 http://deb.debian.org/debian-security bookworm-security/main arm64 libpython3.11-minimal arm64 3.11.2-6+deb12u9 [814 kB]
+#26 235.3 Get:2 http://deb.debian.org/debian-security bookworm-security/main arm64 libexpat1 arm64 2.5.0-1+deb12u4 [89.2 kB]
+#26 236.3 Get:3 http://deb.debian.org/debian-security bookworm-security/main arm64 python3.11-minimal arm64 3.11.2-6+deb12u9 [1,862 kB]
+#26 273.0 Get:4 http://deb.debian.org/debian bookworm/main arm64 python3-minimal arm64 3.11.2-1+b1 [26.3 kB]
+#26 273.3 Get:5 http://deb.debian.org/debian bookworm/main arm64 media-types all 10.0.0 [26.1 kB]
+#26 273.6 Get:6 http://deb.debian.org/debian bookworm/main arm64 libtirpc-common all 1.3.3+ds-1 [14.0 kB]
+#26 273.8 Get:7 http://deb.debian.org/debian bookworm/main arm64 libtirpc3 arm64 1.3.3+ds-1 [80.9 kB]
+#26 275.2 Get:8 http://deb.debian.org/debian bookworm/main arm64 libnsl2 arm64 1.3.0-2 [36.9 kB]
+#26 276.5 Get:9 http://deb.debian.org/debian-security bookworm-security/main arm64 libpython3.11-stdlib arm64 3.11.2-6+deb12u9 [1,750 kB]
+#26 339.0 Get:10 http://deb.debian.org/debian-security bookworm-security/main arm64 python3.11 arm64 3.11.2-6+deb12u9 [575 kB]
+#26 358.2 Get:11 http://deb.debian.org/debian bookworm/main arm64 libpython3-stdlib arm64 3.11.2-1+b1 [9,296 B]
+#26 358.4 Get:12 http://deb.debian.org/debian bookworm/main arm64 python3 arm64 3.11.2-1+b1 [26.3 kB]
+#26 358.8 Get:13 http://deb.debian.org/debian-security bookworm-security/main arm64 ca-certificates all 20250419~deb12u1 [162 kB]
+#26 361.7 Get:14 http://deb.debian.org/debian bookworm/main arm64 python3-lib2to3 all 3.11.2-3 [76.3 kB]
+#26 364.3 Get:15 http://deb.debian.org/debian bookworm/main arm64 python3-distutils all 3.11.2-3 [131 kB]
+#26 366.3 Get:16 http://deb.debian.org/debian bookworm/main arm64 python3-pip-whl all 23.0.1+dfsg-1 [1,717 kB]
+#26 412.5 Ign:16 http://deb.debian.org/debian bookworm/main arm64 python3-pip-whl all 23.0.1+dfsg-1
+#26 412.6 Get:17 http://deb.debian.org/debian bookworm/main arm64 python3-setuptools-whl all 66.1.1-1+deb12u2 [1,112 kB]
+#26 429.4 Get:18 http://deb.debian.org/debian-security bookworm-security/main arm64 python3.11-venv arm64 3.11.2-6+deb12u9 [5,896 B]
+#26 429.5 Get:19 http://deb.debian.org/debian bookworm/main arm64 python3-venv arm64 3.11.2-1+b1 [1,200 B]
+#26 429.7 Get:16 http://deb.debian.org/debian bookworm/main arm64 python3-pip-whl all 23.0.1+dfsg-1 [1,717 kB]
+#26 436.9 debconf: delaying package configuration, since apt-utils is not installed
+#26 437.0 Fetched 7,516 kB in 3min 53s (32.3 kB/s)
+#26 437.1 Selecting previously unselected package libpython3.11-minimal:arm64.
+#26 437.1 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 12075 files and directories currently installed.)
+#26 437.1 Preparing to unpack .../libpython3.11-minimal_3.11.2-6+deb12u9_arm64.deb ...
+#26 437.1 Unpacking libpython3.11-minimal:arm64 (3.11.2-6+deb12u9) ...
+#26 437.2 Selecting previously unselected package libexpat1:arm64.
+#26 437.2 Preparing to unpack .../libexpat1_2.5.0-1+deb12u4_arm64.deb ...
+#26 437.2 Unpacking libexpat1:arm64 (2.5.0-1+deb12u4) ...
+#26 437.2 Selecting previously unselected package python3.11-minimal.
+#26 437.2 Preparing to unpack .../python3.11-minimal_3.11.2-6+deb12u9_arm64.deb ...
+#26 437.3 Unpacking python3.11-minimal (3.11.2-6+deb12u9) ...
+#26 437.4 Setting up libpython3.11-minimal:arm64 (3.11.2-6+deb12u9) ...
+#26 437.4 Setting up libexpat1:arm64 (2.5.0-1+deb12u4) ...
+#26 437.4 Setting up python3.11-minimal (3.11.2-6+deb12u9) ...
+#26 437.8 Selecting previously unselected package python3-minimal.
+#26 437.8 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 12391 files and directories currently installed.)
+#26 437.8 Preparing to unpack .../0-python3-minimal_3.11.2-1+b1_arm64.deb ...
+#26 437.8 Unpacking python3-minimal (3.11.2-1+b1) ...
+#26 437.8 Selecting previously unselected package media-types.
+#26 437.8 Preparing to unpack .../1-media-types_10.0.0_all.deb ...
+#26 437.8 Unpacking media-types (10.0.0) ...
+#26 437.9 Selecting previously unselected package libtirpc-common.
+#26 437.9 Preparing to unpack .../2-libtirpc-common_1.3.3+ds-1_all.deb ...
+#26 437.9 Unpacking libtirpc-common (1.3.3+ds-1) ...
+#26 437.9 Selecting previously unselected package libtirpc3:arm64.
+#26 437.9 Preparing to unpack .../3-libtirpc3_1.3.3+ds-1_arm64.deb ...
+#26 437.9 Unpacking libtirpc3:arm64 (1.3.3+ds-1) ...
+#26 437.9 Selecting previously unselected package libnsl2:arm64.
+#26 437.9 Preparing to unpack .../4-libnsl2_1.3.0-2_arm64.deb ...
+#26 437.9 Unpacking libnsl2:arm64 (1.3.0-2) ...
+#26 437.9 Selecting previously unselected package libpython3.11-stdlib:arm64.
+#26 437.9 Preparing to unpack .../5-libpython3.11-stdlib_3.11.2-6+deb12u9_arm64.deb ...
+#26 437.9 Unpacking libpython3.11-stdlib:arm64 (3.11.2-6+deb12u9) ...
+#26 438.1 Selecting previously unselected package python3.11.
+#26 438.1 Preparing to unpack .../6-python3.11_3.11.2-6+deb12u9_arm64.deb ...
+#26 438.1 Unpacking python3.11 (3.11.2-6+deb12u9) ...
+#26 438.1 Selecting previously unselected package libpython3-stdlib:arm64.
+#26 438.1 Preparing to unpack .../7-libpython3-stdlib_3.11.2-1+b1_arm64.deb ...
+#26 438.1 Unpacking libpython3-stdlib:arm64 (3.11.2-1+b1) ...
+#26 438.1 Setting up python3-minimal (3.11.2-1+b1) ...
+#26 438.2 Selecting previously unselected package python3.
+#26 438.2 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 12821 files and directories currently installed.)
+#26 438.2 Preparing to unpack .../0-python3_3.11.2-1+b1_arm64.deb ...
+#26 438.2 Unpacking python3 (3.11.2-1+b1) ...
+#26 438.2 Selecting previously unselected package ca-certificates.
+#26 438.2 Preparing to unpack .../1-ca-certificates_20250419~deb12u1_all.deb ...
+#26 438.2 Unpacking ca-certificates (20250419~deb12u1) ...
+#26 438.3 Selecting previously unselected package python3-lib2to3.
+#26 438.3 Preparing to unpack .../2-python3-lib2to3_3.11.2-3_all.deb ...
+#26 438.3 Unpacking python3-lib2to3 (3.11.2-3) ...
+#26 438.3 Selecting previously unselected package python3-distutils.
+#26 438.3 Preparing to unpack .../3-python3-distutils_3.11.2-3_all.deb ...
+#26 438.3 Unpacking python3-distutils (3.11.2-3) ...
+#26 438.3 Selecting previously unselected package python3-pip-whl.
+#26 438.3 Preparing to unpack .../4-python3-pip-whl_23.0.1+dfsg-1_all.deb ...
+#26 438.3 Unpacking python3-pip-whl (23.0.1+dfsg-1) ...
+#26 438.4 Selecting previously unselected package python3-setuptools-whl.
+#26 438.4 Preparing to unpack .../5-python3-setuptools-whl_66.1.1-1+deb12u2_all.deb ...
+#26 438.4 Unpacking python3-setuptools-whl (66.1.1-1+deb12u2) ...
+#26 438.5 Selecting previously unselected package python3.11-venv.
+#26 438.5 Preparing to unpack .../6-python3.11-venv_3.11.2-6+deb12u9_arm64.deb ...
+#26 438.5 Unpacking python3.11-venv (3.11.2-6+deb12u9) ...
+#26 438.5 Selecting previously unselected package python3-venv.
+#26 438.5 Preparing to unpack .../7-python3-venv_3.11.2-1+b1_arm64.deb ...
+#26 438.5 Unpacking python3-venv (3.11.2-1+b1) ...
+#26 438.5 Setting up media-types (10.0.0) ...
+#26 438.5 Setting up python3-setuptools-whl (66.1.1-1+deb12u2) ...
+#26 438.5 Setting up libtirpc-common (1.3.3+ds-1) ...
+#26 438.6 Setting up ca-certificates (20250419~deb12u1) ...
+#26 438.6 debconf: unable to initialize frontend: Dialog
+#26 438.6 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#26 438.6 debconf: falling back to frontend: Readline
+#26 438.6 debconf: unable to initialize frontend: Readline
+#26 438.6 debconf: (This frontend requires a controlling tty.)
+#26 438.6 debconf: falling back to frontend: Teletype
+#26 438.8 Updating certificates in /etc/ssl/certs...
+#26 439.0 150 added, 0 removed; done.
+#26 439.0 Setting up libtirpc3:arm64 (1.3.3+ds-1) ...
+#26 439.0 Setting up python3-pip-whl (23.0.1+dfsg-1) ...
+#26 439.1 Setting up libnsl2:arm64 (1.3.0-2) ...
+#26 439.1 Setting up libpython3.11-stdlib:arm64 (3.11.2-6+deb12u9) ...
+#26 439.1 Setting up libpython3-stdlib:arm64 (3.11.2-1+b1) ...
+#26 439.1 Setting up python3.11 (3.11.2-6+deb12u9) ...
+#26 439.4 Setting up python3 (3.11.2-1+b1) ...
+#26 439.4 running python rtupdate hooks for python3.11...
+#26 439.4 running python post-rtupdate hooks for python3.11...
+#26 439.5 Setting up python3-lib2to3 (3.11.2-3) ...
+#26 439.5 Setting up python3-distutils (3.11.2-3) ...
+#26 439.6 Setting up python3.11-venv (3.11.2-6+deb12u9) ...
+#26 439.6 Setting up python3-venv (3.11.2-1+b1) ...
+#26 439.6 Processing triggers for libc-bin (2.36-9+deb12u14) ...
+#26 439.9 Processing triggers for ca-certificates (20250419~deb12u1) ...
+#26 439.9 Updating certificates in /etc/ssl/certs...
+#26 440.0 0 added, 0 removed; done.
+#26 440.0 Running hooks in /etc/ca-certificates/update.d...
+#26 440.0 done.
+#26 454.0 Collecting boto3
+#26 470.3   Downloading boto3-1.43.113-py3-none-any.whl (140 kB)
+#26 477.6      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 140.0/140.0 kB 18.6 kB/s eta 0:00:00
+#26 488.0 Collecting botocore<1.44.0,>=1.43.113
+#26 488.1   Downloading botocore-1.43.113-py3-none-any.whl (16.1 MB)
+#26 638.3 ERROR: Exception:
+#26 638.3 Traceback (most recent call last):
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_vendor/urllib3/response.py", line 438, in _error_catcher
+#26 638.3     yield
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_vendor/urllib3/response.py", line 561, in read
+#26 638.3     data = self._fp_read(amt) if not fp_closed else b""
+#26 638.3            ^^^^^^^^^^^^^^^^^^
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_vendor/urllib3/response.py", line 527, in _fp_read
+#26 638.3     return self._fp.read(amt) if amt is not None else self._fp.read()
+#26 638.3            ^^^^^^^^^^^^^^^^^^
+#26 638.3   File "/usr/lib/python3.11/http/client.py", line 470, in read
+#26 638.3     s = self.fp.read(amt)
+#26 638.3         ^^^^^^^^^^^^^^^^^
+#26 638.3   File "/usr/lib/python3.11/socket.py", line 706, in readinto
+#26 638.3     return self._sock.recv_into(b)
+#26 638.3            ^^^^^^^^^^^^^^^^^^^^^^^
+#26 638.3   File "/usr/lib/python3.11/ssl.py", line 1324, in recv_into
+#26 638.3     return self.read(nbytes, buffer)
+#26 638.3            ^^^^^^^^^^^^^^^^^^^^^^^^^
+#26 638.3   File "/usr/lib/python3.11/ssl.py", line 1180, in read
+#26 638.3     return self._sslobj.read(len, buffer)
+#26 638.3            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#26 638.3 TimeoutError: The read operation timed out
+#26 638.3 
+#26 638.3 During handling of the above exception, another exception occurred:
+#26 638.3 
+#26 638.3 Traceback (most recent call last):
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_internal/cli/base_command.py", line 160, in exc_logging_wrapper
+#26 638.3     status = run_func(*args)
+#26 638.3              ^^^^^^^^^^^^^^^
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_internal/cli/req_command.py", line 247, in wrapper
+#26 638.3     return func(self, options, args)
+#26 638.3            ^^^^^^^^^^^^^^^^^^^^^^^^^
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_internal/commands/install.py", line 419, in run
+#26 638.3     requirement_set = resolver.resolve(
+#26 638.3                       ^^^^^^^^^^^^^^^^^
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_internal/resolution/resolvelib/resolver.py", line 92, in resolve
+#26 638.3     result = self._result = resolver.resolve(
+#26 638.3                             ^^^^^^^^^^^^^^^^^
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_vendor/resolvelib/resolvers.py", line 481, in resolve
+#26 638.3     state = resolution.resolve(requirements, max_rounds=max_rounds)
+#26 638.3             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_vendor/resolvelib/resolvers.py", line 373, in resolve
+#26 638.3     failure_causes = self._attempt_to_pin_criterion(name)
+#26 638.3                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_vendor/resolvelib/resolvers.py", line 213, in _attempt_to_pin_criterion
+#26 638.3     criteria = self._get_updated_criteria(candidate)
+#26 638.3                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_vendor/resolvelib/resolvers.py", line 204, in _get_updated_criteria
+#26 638.3     self._add_to_criteria(criteria, requirement, parent=candidate)
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_vendor/resolvelib/resolvers.py", line 172, in _add_to_criteria
+#26 638.3     if not criterion.candidates:
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_vendor/resolvelib/structs.py", line 151, in __bool__
+#26 638.3     return bool(self._sequence)
+#26 638.3            ^^^^^^^^^^^^^^^^^^^^
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_internal/resolution/resolvelib/found_candidates.py", line 155, in __bool__
+#26 638.3     return any(self)
+#26 638.3            ^^^^^^^^^
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_internal/resolution/resolvelib/found_candidates.py", line 143, in <genexpr>
+#26 638.3     return (c for c in iterator if id(c) not in self._incompatible_ids)
+#26 638.3            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_internal/resolution/resolvelib/found_candidates.py", line 47, in _iter_built
+#26 638.3     candidate = func()
+#26 638.3                 ^^^^^^
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_internal/resolution/resolvelib/factory.py", line 206, in _make_candidate_from_link
+#26 638.3     self._link_candidate_cache[link] = LinkCandidate(
+#26 638.3                                        ^^^^^^^^^^^^^^
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_internal/resolution/resolvelib/candidates.py", line 297, in __init__
+#26 638.3     super().__init__(
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_internal/resolution/resolvelib/candidates.py", line 162, in __init__
+#26 638.3     self.dist = self._prepare()
+#26 638.3                 ^^^^^^^^^^^^^^^
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_internal/resolution/resolvelib/candidates.py", line 231, in _prepare
+#26 638.3     dist = self._prepare_distribution()
+#26 638.3            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_internal/resolution/resolvelib/candidates.py", line 308, in _prepare_distribution
+#26 638.3     return preparer.prepare_linked_requirement(self._ireq, parallel_builds=True)
+#26 638.3            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_internal/operations/prepare.py", line 491, in prepare_linked_requirement
+#26 638.3     return self._prepare_linked_requirement(req, parallel_builds)
+#26 638.3            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_internal/operations/prepare.py", line 536, in _prepare_linked_requirement
+#26 638.3     local_file = unpack_url(
+#26 638.3                  ^^^^^^^^^^^
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_internal/operations/prepare.py", line 166, in unpack_url
+#26 638.3     file = get_http_url(
+#26 638.3            ^^^^^^^^^^^^^
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_internal/operations/prepare.py", line 107, in get_http_url
+#26 638.3     from_path, content_type = download(link, temp_dir.path)
+#26 638.3                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_internal/network/download.py", line 147, in __call__
+#26 638.3     for chunk in chunks:
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_internal/cli/progress_bars.py", line 53, in _rich_progress_bar
+#26 638.3     for chunk in iterable:
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_internal/network/utils.py", line 63, in response_chunks
+#26 638.3     for chunk in response.raw.stream(
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_vendor/urllib3/response.py", line 622, in stream
+#26 638.3     data = self.read(amt=amt, decode_content=decode_content)
+#26 638.3            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_vendor/urllib3/response.py", line 560, in read
+#26 638.3     with self._error_catcher():
+#26 638.3   File "/usr/lib/python3.11/contextlib.py", line 155, in __exit__
+#26 638.3     self.gen.throw(typ, value, traceback)
+#26 638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_vendor/urllib3/response.py", line 443, in _error_catcher
+#26 638.3     raise ReadTimeoutError(self._pool, None, "Read timed out.")
+#26 638.3 pip._vendor.urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='files.pythonhosted.org', port=443): Read timed out.
+#26 638.3      ━━━━━━━━━━━╸                             4.7/16.1 MB 68.2 kB/s eta 0:02:47
+#26 ERROR: process "/bin/sh -c apt-get update     && apt-get install -y --no-install-recommends python3 python3-venv     && python3 -m venv /opt/backup-venv     && /opt/backup-venv/bin/pip install --no-cache-dir boto3     && rm -rf /var/lib/apt/lists/*" did not complete successfully: exit code: 2
+------
+ > [backup 2/4] RUN apt-get update     && apt-get install -y --no-install-recommends python3 python3-venv     && python3 -m venv /opt/backup-venv     && /opt/backup-venv/bin/pip install --no-cache-dir boto3     && rm -rf /var/lib/apt/lists/*:
+638.3     data = self.read(amt=amt, decode_content=decode_content)
+638.3            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_vendor/urllib3/response.py", line 560, in read
+638.3     with self._error_catcher():
+638.3   File "/usr/lib/python3.11/contextlib.py", line 155, in __exit__
+638.3     self.gen.throw(typ, value, traceback)
+638.3   File "/opt/backup-venv/lib/python3.11/site-packages/pip/_vendor/urllib3/response.py", line 443, in _error_catcher
+638.3     raise ReadTimeoutError(self._pool, None, "Read timed out.")
+638.3 pip._vendor.urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='files.pythonhosted.org', port=443): Read timed out.
+638.3      ━━━━━━━━━━━╸                             4.7/16.1 MB 68.2 kB/s eta 0:02:47
+------
+Dockerfile:3
+
+--------------------
+
+   2 |     
+
+   3 | >>> RUN apt-get update \
+
+   4 | >>>     && apt-get install -y --no-install-recommends python3 python3-venv \
+
+   5 | >>>     && python3 -m venv /opt/backup-venv \
+
+   6 | >>>     && /opt/backup-venv/bin/pip install --no-cache-dir boto3 \
+
+   7 | >>>     && rm -rf /var/lib/apt/lists/*
+
+   8 |     
+
+--------------------
+
+target backup: failed to solve: process "/bin/sh -c apt-get update     && apt-get install -y --no-install-recommends python3 python3-venv     && python3 -m venv /opt/backup-venv     && /opt/backup-venv/bin/pip install --no-cache-dir boto3     && rm -rf /var/lib/apt/lists/*" did not complete successfully: exit code: 2
+
+
+The repeated dependency download timed out; reusing the backup image from the successful isolated recovery run.
+ Network devopslabminiproject_default Creating 
+ Network devopslabminiproject_default Created 
+ Volume devopslabminiproject_postgres_data Creating 
+ Volume devopslabminiproject_postgres_data Created 
+ Volume devopslabminiproject_minio_data Creating 
+ Volume devopslabminiproject_minio_data Created 
+ Container devopslabminiproject-minio-1 Creating 
+ Container devopslabminiproject-postgres-1 Creating 
+ Container devopslabminiproject-minio-1 Created 
+ Container devopslabminiproject-postgres-1 Created 
+ Container devopslabminiproject-app-1 Creating 
+ Container devopslabminiproject-app-1 Created 
+ Container devopslabminiproject-backup-1 Creating 
+ Container devopslabminiproject-backup-1 Created 
+ Container devopslabminiproject-minio-1 Starting 
+ Container devopslabminiproject-postgres-1 Starting 
+ Container devopslabminiproject-minio-1 Started 
+ Container devopslabminiproject-postgres-1 Started 
+ Container devopslabminiproject-postgres-1 Waiting 
+ Container devopslabminiproject-postgres-1 Healthy 
+ Container devopslabminiproject-app-1 Starting 
+ Container devopslabminiproject-app-1 Started 
+ Container devopslabminiproject-postgres-1 Waiting 
+ Container devopslabminiproject-minio-1 Waiting 
+ Container devopslabminiproject-app-1 Waiting 
+ Container devopslabminiproject-postgres-1 Healthy 
+ Container devopslabminiproject-minio-1 Healthy 
+ Container devopslabminiproject-app-1 Healthy 
+ Container devopslabminiproject-backup-1 Starting 
+ Container devopslabminiproject-backup-1 Started 

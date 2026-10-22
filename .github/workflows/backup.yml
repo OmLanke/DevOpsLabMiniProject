@@ -1,0 +1,23 @@
+name: Scheduled backup and recovery demonstration
+
+on:
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  disposable-backup-restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cp .env.example .env
+      - run: ./scripts/integration.sh 2>&1 | tee recovery-run.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: scheduled-recovery-evidence
+          path: recovery-run.log
+          if-no-files-found: ignore

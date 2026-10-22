@@ -1,0 +1,11 @@
+{
+  "name": "devops-lab-report",
+  "private": true,
+  "scripts": {
+    "build": "node tools/build-report.cjs",
+    "diagrams": "python3 tools/build-diagrams.py"
+  },
+  "devDependencies": {
+    "docx": "9.11.0"
+  }
+}

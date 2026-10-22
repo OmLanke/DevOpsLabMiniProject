@@ -1,0 +1,22 @@
+API health: {"status": "ok", "database": "connected"}
+MinIO console: HTTP 200
+
+$ ./scripts/backup.sh
+backups/2026-10-14/20261014T060742Z-6eec43bf6e424212907038f1e7ce46c7.dump
+ Container devopslabminiproject-backup-run-93bb4e7d0362 Creating 
+ Container devopslabminiproject-backup-run-93bb4e7d0362 Created 
+2026-10-14 06:07:42,589 INFO creating PostgreSQL dump for database notes
+2026-10-14 06:07:42,670 INFO uploaded backups/2026-10-14/20261014T060742Z-6eec43bf6e424212907038f1e7ce46c7.dump (2801 bytes, sha256 5c5b40c36738d63d43ae5041b53ebf52e55b3c7088f9c8fc96dd721d6f278762)
+
+
+$ ./scripts/list-backups.sh
+2026-10-14T06:07:42.662000+00:00	2801	backups/2026-10-14/20261014T060742Z-6eec43bf6e424212907038f1e7ce46c7.dump
+2026-10-14T06:07:05.210000+00:00	2801	backups/2026-10-14/20261014T060705Z-b094a2823e724ac5aab8e8a856687a59.dump
+2026-10-14T06:04:23.834000+00:00	2801	backups/2026-10-14/20261014T060423Z-7ed174c072e34b9ba87601baebba9d65.dump
+ Container devopslabminiproject-backup-run-fe92ae2b3576 Creating 
+ Container devopslabminiproject-backup-run-fe92ae2b3576 Created 
+2026-10-14 06:07:43,946 INFO listed 3 backups
+
+Final scheduled-worker check after image rebuild:
+backup-1  | 2026-10-14 06:07:05,094 INFO creating PostgreSQL dump for database notes
+backup-1  | 2026-10-14 06:07:05,218 INFO uploaded backups/2026-10-14/20261014T060705Z-b094a2823e724ac5aab8e8a856687a59.dump (2801 bytes, sha256 9425268367d9ac64b85be4ec35ad5149e4dc86e1ca33524479c1fe2b45572456)
