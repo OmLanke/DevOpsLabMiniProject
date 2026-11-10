@@ -3,6 +3,7 @@
 node_modules/
 .venv/
 coverage/
+.taste-skill/
 *.log
 !report/evidence/checks.log
 !report/evidence/backup-build.log
@@ -12,3 +13,7 @@ coverage/
 .pytest_cache/
 __pycache__/
 *.py[cod]
+
+!report/evidence/ui-recovery.log
+!report/evidence/recovery-run-2026-11-11.log
+!report/evidence/checks-2026-11-11.log

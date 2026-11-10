@@ -1,63 +1,41 @@
-# Completion and verification
+# Verified application and recovery report
 
-Verified locally on **14 October 2026**, using **Node.js 24.21.0**, **Docker 29.4.0**, **Compose 5.1.2**, and OrbStack on an Apple Silicon Mac.
+Verified locally on **11 November 2026 (India time)**. The browser-run assertions were recorded at `2026-11-10T20:05:46.955Z` (UTC).
 
-## Completed work
+## Current deliverables
 
-- Preserved the existing Notes API and backup/restore architecture.
-- Updated the API lockfile within its existing dependency ranges, resolving the four initially reported advisories.
-- Replaced the unavailable MinIO public image with a locally built, checksum-verified copy of the same upstream release.
-- Strengthened the disaster demonstration to delete only its owner-checked isolated PostgreSQL volume, retain MinIO backups, and verify the recreated database is empty.
-- Fixed rediscovery of the API's ephemeral host port after restart.
-- Increased the backup image's pip download timeout after a slow PyPI transfer failed, then rebuilt the image and verified its scheduled worker.
-- Added focused backup failure-path tests and GitHub Actions recovery log artifacts.
-- Created the project report with both authors, ten chapters, nine diagrams and twelve tables. Supplied editable DOCX, PDF, report sources and rebuild instructions.
+The report contains **36 pages, 17 figures (nine diagrams and eight screenshots), 12 tables and 79 indexed headings/captions**. The DOCX passed schema validation. Every rendered page was visually reviewed; the final page references match the PDF. Artifact and screenshot hashes are recorded in [report-validation.json](report-validation.json).
 
-## Focused checks
+## Executed checks
 
 | Check | Result | Evidence |
 | --- | --- | --- |
-| JavaScript syntax | Passed | [checks.log](checks.log) |
-| API behaviour | 4 tests passed | [checks.log](checks.log) |
-| Backup/restore and wrapper safety | 13 tests passed | [checks.log](checks.log) |
-| API dependency audit | Zero reported advisories | [checks.log](checks.log) |
-| Compose configuration | Passed | [checks.json](checks.json) |
-| Shell script syntax | Passed | [checks.json](checks.json) |
-| All project Docker images | Built successfully | [recovery-run.log](recovery-run.log) |
-| Actual isolated database-volume loss and recovery | Passed | [recovery-run.log](recovery-run.log) |
-| Temporary recovery resources | Removed on successful exit | Local Docker resource check |
-| Normal-stack API and MinIO console | Healthy; HTTP 200 | [local-smoke.log](local-smoke.log) |
-| Normal-stack backup/list wrappers | Passed | [local-smoke.log](local-smoke.log) |
-| Updated backup image and scheduled worker | Rebuilt; initial dump uploaded | [backup-build.log](backup-build.log) |
-| DOCX XML/schema validation | Passed | Office document validator |
-| SVG generation and PNG dimension checks | Nine diagrams passed | Diagram builder assertions |
-| PDF layout and page references | Inspected and indexed | [page-map.json](../page-map.json) |
+| JavaScript syntax and static serving/API tests | Passed; 5 tests | [checks-2026-11-11.log](checks-2026-11-11.log) |
+| Backup/restore and wrapper safety | 13 tests passed | Same checks log |
+| Node production dependency audit | Zero reported advisories | Same checks log |
+| Compose configuration | Passed | Same checks log |
+| Existing scripts/demo.sh recovery exercise | Exact original records recovered after isolated volume deletion | [recovery-run-2026-11-11.log](recovery-run-2026-11-11.log) |
+| Folio browser recovery exercise | Exact original records recovered; no browser exceptions | [ui-recovery-summary.json](ui-recovery-summary.json) and [ui-recovery.log](ui-recovery.log) |
+| Temporary containers and volumes | Removed after both demonstrations | Each recovery log |
 
-The final report is 28 pages. All 70 contents/figure/table references were compared with their actual PDF page locations and with the DOCX hyperlinks. The PDF uses Times New Roman and Courier fonts; visible text fits the page margins. The reference result is saved in [report-validation.json](report-validation.json).
+## Browser demonstration
 
-The normal local stack remains running at <http://localhost:3000/health> and <http://localhost:9001>. An initial repeated backup-image build encountered a slow PyPI download, so startup temporarily reused the already tested image. Increasing pip's download timeout to 120 seconds allowed a fresh build to succeed. Only the backup worker was refreshed afterward, and its first scheduled archive was uploaded successfully. All volumes were preserved.
+Two notes were created and saved through Folio: **Database recovery lab** and **Presentation checklist**. Search and the mobile editor were captured. Two different manual backup keys were created and listed; bucket versioning, dump size and SHA-256 were verified. One note was edited, the second deleted, and a new post-backup note added. The changed state still had two notes, demonstrating why count-only checks are insufficient.
 
-## Actual recovery outcome
+The app and worker were stopped, the PostgreSQL volume's Compose ownership was checked, and only that isolated database volume was deleted. The new database had **zero public tables**. Starting Folio created an empty notes table, allowing the empty notebook to be captured. The app was stopped again before restoring the verified archive. After restart, both original notes returned and the post-backup note disappeared. All returned fields matched the recorded snapshot exactly, including IDs and creation/update timestamps.
 
-The exercise saved two records, created two uniquely named manual backups, checked complete listings, enabled bucket versioning, and verified the chosen object's manifest, size and SHA-256. It changed/deleted notes and added a post-backup note, stopped writers, deleted the isolated PostgreSQL volume, and confirmed zero public application tables in the fresh database. It then restored the selected archive and compared the whole API response with the saved snapshot.
+Selected key: `backups/2026-11-10/20261110T200522Z-e393761ff0934ec59f8d21efc64345c1.dump`
 
-| ID | Title | Content | Original and recovered timestamps |
-| --- | --- | --- | --- |
-| 1 | Recover me | original-one | 2026-10-14T05:49:36.660Z |
-| 2 | Also recover me | original-two | 2026-10-14T05:49:36.668Z |
+Archive size: **3,181 bytes**. SHA-256: `28dd431031d8bced14ced9589848dc93789cbb5aed134a835b3d229c5fbfb05d`.
 
-Both `created_at` and `updated_at` matched those timestamps. The final assertion confirmed equality of all returned fields; the changed and post-backup state was replaced by the selected snapshot.
+The observed restore/startup interval was 7.58 seconds for this dataset; this is not a production RTO guarantee. Full records are retained in [ui-before.json](ui-before.json) and [ui-after.json](ui-after.json).
 
-Selected key:
+## Screenshot provenance
 
-```text
-backups/2026-10-14/20261014T054937Z-542fb81ff9024e768cc0162596452a3d.dump
-```
+Eight PNGs in `report/screenshots/` are embedded in the report. Seven are genuine captures of Folio during the live demonstration. The eighth is a clearly labelled, formatted HTML summary of actual recorded assertions and archive metadata; it is not an operating-system terminal screenshot. Its source is [recovery-verification.html](recovery-verification.html), backed by the full command log.
 
-The actual manifest and byte count are recorded in the recovery log and shown in the report. No resources whose names begin with the generated `notes-dr-` prefix remained after the exercise. Unrelated Docker volumes were retained.
+All data-loss operations used generated Compose projects. The normal local stack's database and backup volumes were retained. The older October logs remain as historical evidence and do not supply the current report's recovery figures.
 
 ## Verification boundaries
 
-Remote GitHub Actions jobs were not launched; the workflow definitions and their local commands were checked. The repository was not pushed or published. Container vulnerability scans, production deployment, host-loss recovery and large-database performance were not tested. The Node audit covers the API dependency tree only. MinIO retains the lab's pinned upstream release, and PostgreSQL and backup storage still share one host.
-
-The institution, programme and visual branding follow the supplied report sample. No faculty, approval, signature or individual contribution claims were invented.
+Remote GitHub Actions, host-loss recovery, production hardening, container vulnerability scanning and large-database performance were not tested. The dependency audit covers Node packages. PostgreSQL and MinIO still share one physical host. The institution branding and author details follow the existing report; no faculty approvals or signatures were invented.

@@ -15,15 +15,15 @@
     ],
     "institution": "K.J. Somaiya School of Engineering, Mumbai",
     "programme": "B.Tech Computer Engineering, Final Year",
-    "date": "October 2026",
+    "date": "November 2026",
     "repository": "DevOpsLabMiniProject",
     "faculty_or_guide": null,
     "approval_or_work_split": null
   },
   "abstract": [
-    "Keeping an application online is useful only if its data can also be recovered. An accidental delete or loss of a database volume can remove records even when the application code remains intact. This project uses a small notes API to study that problem through a practical backup and recovery exercise.",
-    "The system combines Node.js and Express, PostgreSQL 17, a Python backup worker and MinIO under Docker Compose. The worker creates compressed logical snapshots with unique UTC keys and publishes a JSON manifest containing the archive size and SHA-256 checksum. Recovery checks the selected key, database, metadata and downloaded bytes before running pg_restore in a single transaction. An operator wrapper pauses the application and scheduled worker, then returns them to their previous running state.",
-    "The completed demonstration creates two notes, backs them up, changes the records, deletes only its isolated PostgreSQL volume and restores the chosen snapshot from MinIO. The recovered rows match the saved original records, including their IDs and timestamps. Four API tests and thirteen Python tests pass. GitHub Actions definitions repeat the checks and retain recovery logs, while the running local worker provides scheduled snapshots of the local database.",
+    "Keeping an application online is useful only if its data can also be recovered. An accidental delete or loss of a database volume can remove records even when the application code remains intact. This project uses Folio, a browser-based notes application, to study that problem through a practical backup and recovery exercise.",
+    "Folio uses vanilla HTML, CSS and JavaScript served by the same Node.js and Express application that provides its notes API. The system combines that application, PostgreSQL 17, a Python backup worker and MinIO under Docker Compose. The worker creates compressed logical snapshots with unique UTC keys and publishes a JSON manifest containing the archive size and SHA-256 checksum. Recovery checks the selected key, database, metadata and downloaded bytes before running pg_restore in a single transaction. An operator wrapper pauses the application and scheduled worker, then returns them to their previous running state.",
+    "The completed demonstration creates two notes, backs them up, changes the records, deletes only its isolated PostgreSQL volume and restores the chosen snapshot from MinIO. The recovered rows match the saved original records, including their IDs and timestamps. Five application tests and thirteen Python tests pass. GitHub Actions definitions repeat the checks and retain recovery logs, while the running local worker provides scheduled snapshots of the local database.",
     "The report moves from the everyday problem of lost records to the architecture, implementation and observed checks. It also explains the main boundary: PostgreSQL and MinIO share one host, so this lab demonstrates database-loss recovery without claiming protection against loss of that host."
   ],
   "keywords": "Database backup, disaster recovery, PostgreSQL, Docker Compose, MinIO, SHA-256, DevOps automation.",
@@ -37,11 +37,11 @@
         },
         {
           "type": "paragraph",
-          "text": "Imagine opening a notes application and finding that an important record has disappeared. Restarting the application may bring the page back, but it cannot bring back a row that was deleted from the database. That distinction is the starting point of this project: keeping a service running and recovering its data are two different responsibilities."
+          "text": "Restarting a notes application can restore its page, but it cannot recover a deleted database row. This project connects a usable browser notebook to a separate, tested backup and recovery workflow."
         },
         {
           "type": "paragraph",
-          "text": "Containers make an application reproducible, but they are not backups. A database volume survives container restarts; removing the volume removes its records. This project uses a notes service to make that distinction visible and connects it to an automated recovery workflow."
+          "text": "Containers reproduce the application environment. Persistent volumes keep data across restarts, but deleting a database volume removes its records. Backups preserve a separate recovery point."
         },
         {
           "type": "heading",
@@ -62,10 +62,10 @@
         {
           "type": "list",
           "items": [
-            "Create a PostgreSQL-backed notes API with realistic persistent records.",
+            "Create a browser-based PostgreSQL-backed notes application with realistic persistent records.",
             "Take scheduled compressed logical backups and store uniquely named copies in MinIO.",
             "Record metadata and a SHA-256 checksum for every completed backup.",
-            "Verify the selected archive before restoring it, and pause application writers during normal recovery.",
+            "Verify selected archives and pause application writers during recovery.",
             "Demonstrate exact recovery after loss of an isolated database volume.",
             "Run automated checks and keep evidence that can be reviewed after the demonstration."
           ]
@@ -76,11 +76,7 @@
         },
         {
           "type": "paragraph",
-          "text": "This is a local DevOps teaching project. Four services run on one Docker host, with the API available through localhost. GitHub Actions can repeat its checks on a disposable runner. The notes service supplies meaningful data for the recovery exercise."
-        },
-        {
-          "type": "paragraph",
-          "text": "Host-loss protection, user accounts, continuous replication and arbitrary point-in-time recovery are outside the lab. The report explains these limits after presenting the implementation and results."
+          "text": "This local teaching project runs four services on one Docker host. Folio and its API are available through localhost, and GitHub Actions can repeat the recovery exercise on a disposable runner. User accounts, host-loss protection, continuous replication and arbitrary point-in-time recovery are outside its scope."
         }
       ]
     },
@@ -173,6 +169,10 @@
             "Role"
           ],
           "rows": [
+            [
+              "HTML, CSS, JavaScript",
+              "Folio browser interface served by Express"
+            ],
             [
               "Node.js 24, Express 5",
               "HTTP API, JSON validation and note routes"
@@ -279,7 +279,7 @@
         },
         {
           "type": "paragraph",
-          "text": "The client sends HTTP requests to Express, and Express stores or retrieves rows in PostgreSQL. The backup worker independently connects to the same database, creates an archive and transfers it to MinIO. During recovery, a selected MinIO archive flows in the opposite direction through the restore CLI and back into PostgreSQL. Figure 2 separates the running application path from the recovery path."
+          "text": "The browser loads Folio from Express and sends same-origin HTTP requests to its notes API. Express stores or retrieves rows in PostgreSQL. The backup worker independently connects to the same database, creates an archive and transfers it to MinIO. During recovery, a selected MinIO archive flows in the opposite direction through the restore CLI and back into PostgreSQL. Figure 2 separates the running application path from the recovery path."
         },
         {
           "type": "figure",
@@ -351,6 +351,7 @@
           "type": "code",
           "lines": [
             "DevOpsLabMiniProject/",
+            "  app/public/              Folio HTML, CSS and JavaScript",
             "  app/src/                 Express routes and server",
             "  app/test/                API tests",
             "  backup/backup.py         Backup, list, restore, worker CLI",
@@ -374,11 +375,11 @@
         },
         {
           "type": "paragraph",
-          "text": "The notes API gives the recovery system something small but meaningful to preserve. A note has text, an identifier and two timestamps. That is enough to show whether a restore recovered the exact row rather than merely rebuilding an empty table. The application remains deliberately small so that backup and recovery stay the focus of the lab."
+          "text": "Folio gives the recovery system something small but meaningful to preserve. A note has text, an identifier and two timestamps. That is enough to show whether a restore recovered the exact row rather than merely rebuilding an empty table. The application remains deliberately small so that backup and recovery stay the focus of the lab."
         },
         {
           "type": "paragraph",
-          "text": "The project exposes a REST API. Requests can be made with curl or Postman, and responses use JSON. A separate web interface is not required for the recovery exercise. The database table is created on startup if absent, and the process closes its HTTP server and database pool when it receives a termination signal."
+          "text": "Express serves the Folio browser interface and its JSON REST API from the same origin. Requests can also be made with curl or Postman. The database table is created on startup if absent, and the process closes its HTTP server and database pool when it receives a termination signal."
         },
         {
           "type": "heading",
@@ -459,6 +460,40 @@
         {
           "type": "paragraph",
           "text": "Database values are passed as SQL parameters instead of being concatenated into query text. Database failures return a generic 500 response; health failures return 503. Internal connection details are not exposed in API responses. The lab has no authentication, so its loopback-only publication is an important boundary rather than a substitute for production access control."
+        },
+        {
+          "type": "heading",
+          "text": "5.5 Folio browser interface"
+        },
+        {
+          "type": "paragraph",
+          "text": "Folio presents a botanical green workspace with a note list and editor. Users create, read, update and delete notes through explicit actions; edits are saved only when the user chooses Save. The interface asks before discarding unsaved changes and retains the draft if a save fails."
+        },
+        {
+          "type": "figure",
+          "path": "screenshots/01-workspace.png",
+          "caption": "Figure 6: Folio notes workspace",
+          "width": 600
+        },
+        {
+          "type": "paragraph",
+          "text": "Search filters notes by their title or content, and the list can be sorted by recent updates or title. The editor displays the encoded JSON payload size and prevents saves above the 32,768-byte request limit. Figure 7 shows the search interface."
+        },
+        {
+          "type": "figure",
+          "path": "screenshots/02-search.png",
+          "caption": "Figure 7: Searching saved notes",
+          "width": 600
+        },
+        {
+          "type": "paragraph",
+          "text": "The layout adapts to smaller screens by showing the list or the editor in turn, as shown in Figure 8. Folio has no login and is intended for the local, loopback-only deployment described in this report."
+        },
+        {
+          "type": "figure",
+          "path": "screenshots/03-mobile.png",
+          "caption": "Figure 8: Folio on a mobile screen",
+          "width": 260
         }
       ]
     },
@@ -480,7 +515,7 @@
         {
           "type": "figure",
           "file": "06-backup-flow",
-          "caption": "Figure 6: Scheduled backup and publication workflow"
+          "caption": "Figure 9: Scheduled backup and publication workflow"
         },
         {
           "type": "heading",
@@ -541,9 +576,9 @@
           "lines": [
             "{",
             "  \"database\": \"notes\",",
-            "  \"timestamp\": \"2026-10-14T05:49:37.275188+00:00\",",
-            "  \"size_bytes\": 2883,",
-            "  \"sha256\": \"b1bacb9c150470dc8a6a4c398bbe14d9e0cd4273cdbb55601bd2b8776acf64c4\"",
+            "  \"timestamp\": \"2026-11-10T20:05:22.150957+00:00\",",
+            "  \"size_bytes\": 3181,",
+            "  \"sha256\": \"28dd431031d8bced14ced9589848dc93789cbb5aed134a835b3d229c5fbfb05d\"",
             "}"
           ]
         },
@@ -561,12 +596,12 @@
         },
         {
           "type": "paragraph",
-          "text": "The wrapper stops those services, invokes the Python restore CLI and finally starts only the services that were originally running. This final step is also attempted if the restore fails. The lower-level CLI does not manage application downtime; operators should use the wrapper for a running local stack. Figure 7 shows the complete operator path."
+          "text": "The wrapper stops those services, invokes the Python restore CLI and finally starts only the services that were originally running. This final step is also attempted if the restore fails. The lower-level CLI does not manage application downtime; operators should use the wrapper for a running local stack. Figure 10 shows the complete operator path."
         },
         {
           "type": "figure",
           "file": "07-restore-flow",
-          "caption": "Figure 7: Validated restore and service-state recovery",
+          "caption": "Figure 10: Validated restore and service-state recovery",
           "width": 510
         },
         {
@@ -762,12 +797,12 @@
         },
         {
           "type": "paragraph",
-          "text": "A push or pull request starts two independent GitHub Actions jobs. The application job installs the locked Node dependencies, checks JavaScript syntax, runs the API tests and runs Python unit tests. The containers-and-recovery job validates Compose, builds all three project images and runs the isolated recovery exercise. Figure 8 shows these jobs and the separate scheduled workflow."
+          "text": "A push or pull request starts two independent GitHub Actions jobs. The application job installs the locked Node dependencies, checks JavaScript syntax, runs the API tests and runs Python unit tests. The containers-and-recovery job validates Compose, builds all three project images and runs the isolated recovery exercise. Figure 11 shows these jobs and the separate scheduled workflow."
         },
         {
           "type": "figure",
           "file": "08-ci",
-          "caption": "Figure 8: CI jobs and scheduled recovery automation"
+          "caption": "Figure 11: CI jobs and scheduled recovery automation"
         },
         {
           "type": "paragraph",
@@ -839,17 +874,71 @@
         },
         {
           "type": "paragraph",
-          "text": "The experiment begins with two notes: “Recover me” with content “original-one”, and “Also recover me” with content “original-two”. The script saves their complete API representation, including IDs and timestamps. It takes two manual backups, checks that their keys differ and confirms that both appear in the completed-backup list."
+          "text": "In the browser recovery experiment, two notes were saved in Folio: “Database recovery lab” and “Presentation checklist”. Their complete API representations, including IDs and timestamps, were recorded. Two manual backups received different keys. The selected archive and manifest were verified before the notebook was changed."
         },
         {
           "type": "paragraph",
-          "text": "The script reads the chosen dump and manifest directly from MinIO. It checks that bucket versioning is enabled and recomputes the size and SHA-256 of the stored archive. It then edits the first note, deletes the second and creates a new note after the backup. These changes make a later comparison meaningful: recovery must restore the earlier data, not the modified state."
+          "text": "After the selected snapshot, the first note was edited, the second deleted, and a new “Post-backup note” created. These changes distinguish the later state from the recovery point. A separate automated scripts/demo.sh run used the notes “Recover me” and “Also recover me” and also passed its independent recovery exercise."
         },
         {
           "type": "figure",
           "file": "09-recovery-sequence",
-          "caption": "Figure 9: End-to-end data loss and recovery sequence",
+          "caption": "Figure 12: End-to-end data loss and recovery sequence",
           "width": 570
+        },
+        {
+          "type": "paragraph",
+          "text": "The following screenshots document the notebook before backup, after subsequent changes, after database-volume loss, and after recovery. Figure 17 presents a formatted summary of the recorded assertions and archive metadata; the full command output is retained in the evidence log."
+        },
+        {
+          "type": "figure",
+          "path": "screenshots/04-before-backup.png",
+          "caption": "Figure 13: Original notes before backup",
+          "width": 600
+        },
+        {
+          "type": "paragraph",
+          "text": "The recovery point contains two notes created and saved through Folio. Their full JSON records were saved before taking the selected PostgreSQL snapshot."
+        },
+        {
+          "type": "figure",
+          "path": "screenshots/05-after-changes.png",
+          "caption": "Figure 14: Modified state after backup",
+          "width": 600
+        },
+        {
+          "type": "paragraph",
+          "text": "The record count is still two, but the contents differ: one note was edited, the checklist was deleted, and a new note was added after backup. Counts alone would not detect this change."
+        },
+        {
+          "type": "figure",
+          "path": "screenshots/06-empty-database.png",
+          "caption": "Figure 15: Empty notebook after database-volume loss",
+          "width": 600
+        },
+        {
+          "type": "paragraph",
+          "text": "PostgreSQL was recreated after its isolated volume was removed. Folio connected successfully to the new database and showed zero notes before the selected archive was restored."
+        },
+        {
+          "type": "figure",
+          "path": "screenshots/07-restored.png",
+          "caption": "Figure 16: Recovered notebook",
+          "width": 600
+        },
+        {
+          "type": "paragraph",
+          "text": "The original titles and content returned, while the post-backup note disappeared. The API response also matched the saved IDs and both timestamps for every row."
+        },
+        {
+          "type": "figure",
+          "path": "screenshots/08-verification.png",
+          "caption": "Figure 17: Recorded recovery verification",
+          "width": 600
+        },
+        {
+          "type": "paragraph",
+          "text": "This formatted evidence view summarizes assertions from the live run. The archive key, byte size and SHA-256 identify the selected recovery point; the full commands and output remain in the evidence log."
         },
         {
           "type": "heading",
@@ -857,15 +946,15 @@
         },
         {
           "type": "paragraph",
-          "text": "The API and worker are stopped before simulating the failure. The script discovers the PostgreSQL container's mounted named volume and checks its Compose project and volume labels. It refuses deletion unless both identify the generated test project's postgres_data volume. The container is removed and that verified volume is deleted; MinIO and its separate volume are kept."
+          "text": "The API and worker were stopped before the isolated PostgreSQL volume was deleted while MinIO and its separate volume were retained. A fresh PostgreSQL database initially contained zero public tables. The app was then started to show the empty notebook, creating its empty notes table; it was stopped again before the restore CLI was run."
         },
         {
           "type": "paragraph",
-          "text": "A fresh PostgreSQL container initializes a new database volume. The selected archive is verified and restored before the API is restarted. The final GET /notes response is compared with the saved snapshot. Equality covers every returned field, so recovering just the titles or record count would not pass."
+          "text": "The selected archive was verified and restored, and the app was restarted. The recovered GET /notes response matched the saved snapshot exactly, including IDs, titles, content, and creation and update timestamps. The browser displayed the original notes again, and the post-backup note was absent."
         },
         {
           "type": "paragraph",
-          "text": "The selected dump was 2883 bytes. After import, both records returned with their original creation and update timestamps. Table 9 shows the restored values; exact JSON equality, rather than this shortened table alone, determines the test result."
+          "text": "The selected manifest recorded a 3,181-byte dump and SHA-256 28dd431031d8bced14ced9589848dc93789cbb5aed134a835b3d229c5fbfb05d. Its key was backups/2026-11-10/20261110T200522Z-e393761ff0934ec59f8d21efc64345c1.dump. The observed restore and startup interval was 7.58 seconds for this small dataset, not an RTO guarantee. Table 9 summarizes the content; the before/after JSON evidence is authoritative for the exact comparison."
         },
         {
           "type": "table",
@@ -879,14 +968,14 @@
           "rows": [
             [
               "1",
-              "Recover me",
-              "original-one",
+              "Database recovery lab",
+              "Recovery objective and method",
               "Exact match"
             ],
             [
               "2",
-              "Also recover me",
-              "original-two",
+              "Presentation checklist",
+              "Steps before and during demo",
               "Exact match"
             ]
           ],
@@ -903,7 +992,7 @@
         },
         {
           "type": "paragraph",
-          "text": "The following results are recorded from local execution on 14 October 2026 using Node.js 24 and Docker through OrbStack on an Apple Silicon host. Unit tests check isolated behaviours; the Docker experiment checks the actual database, object store and archive tools together. Detailed command output is retained under report/evidence."
+          "text": "The following results were recorded locally on 11 November 2026 (India time), using Node.js 24 and Docker through OrbStack on an Apple Silicon host. The browser recovery verification was recorded at 20:05:46 UTC on 10 November. Unit tests check isolated behaviours; the Docker experiments check the database, object store and archive tools together. Detailed output is retained under report/evidence."
         },
         {
           "type": "table",
@@ -920,9 +1009,9 @@
               "The app and test files parse"
             ],
             [
-              "API test suite",
-              "4 passed",
-              "Health, CRUD, input limits and safe errors"
+              "Application test suite",
+              "5 passed",
+              "Static interface delivery, health, CRUD, input limits and safe errors"
             ],
             [
               "Python unit suite",
@@ -1038,7 +1127,7 @@
         },
         {
           "type": "paragraph",
-          "text": "The project links a small application to a complete operational recovery path. PostgreSQL holds the notes, the worker creates identifiable compressed snapshots, MinIO stores the archive/manifest pairs, and the restore command verifies a selected snapshot before importing it. The host wrapper coordinates application downtime and restores the original service state afterward."
+          "text": "The project links the Folio browser application to a complete operational recovery path. PostgreSQL holds the notes, the worker creates identifiable compressed snapshots, MinIO stores the archive/manifest pairs, and the restore command verifies a selected snapshot before importing it. The host wrapper coordinates application downtime and restores the original service state afterward."
         },
         {
           "type": "paragraph",
@@ -1113,6 +1202,6 @@
     "[5] Amazon Web Services, “Boto3 S3 client reference.” https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html",
     "[6] MinIO, Inc., MinIO source release RELEASE.2025-02-07T23-21-09Z, license and implementation. https://github.com/minio/minio/tree/RELEASE.2025-02-07T23-21-09Z",
     "[7] Express.js, “Express 5.x API reference.” https://expressjs.com/en/5x/api.html",
-    "[8] Project implementation and local verification evidence, DevOpsLabMiniProject, October 2026. README.md; backup/backup.py; scripts/integration.sh; report/evidence/."
+    "[8] Project implementation and local verification evidence, DevOpsLabMiniProject, October–November 2026. README.md; backup/backup.py; scripts/integration.sh; report/evidence/."
   ]
 }

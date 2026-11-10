@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#eef2ed">
+    <meta name="description" content="A shared notebook for lab observations, methods, and results.">
+    <title>Folio — Lab notes</title>
+    <link rel="preload" href="/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/styles.css">
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="workspace-rail" aria-label="Folio workspace">
+        <div class="rail-main">
+          <a class="brand" href="/" aria-label="Folio home">
+            <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+              <path d="M8 4.75h10.6L25 11.1v15.15a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6.75a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+              <path d="M18.5 5v6h6M11 17h10M11 21h7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Folio</span>
+          </a>
+          <div class="workspace-context" title="Everyone on this instance can edit notes.">
+            <span class="context-name">The shared notebook</span>
+            <p>A little space for things worth remembering.</p>
+          </div>
+        </div>
+        <div class="rail-bottom">
+          <div class="connection-status">
+            <span id="health-indicator" class="health-indicator health-checking" aria-hidden="true"></span>
+            <span id="health-status" role="status" aria-live="polite">Checking database…</span>
+          </div>
+          <button id="recoveryOpen" class="rail-help" type="button">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 14.1v-.4c0-1.4 2.4-1.8 2.4-4a2.4 2.4 0 0 0-4.8 0M10 17h.01M10 2.5a7.5 7.5 0 1 0 0 15 7.5 7.5 0 0 0 0-15Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Recovery demo</span>
+          </button>
+        </div>
+      </aside>
+
+      <main class="main-area">
+        <header class="workspace-header">
+          <div class="title-block">
+            <h1>Your notebook.</h1>
+            <p>Small observations. Worth keeping.</p>
+          </div>
+          <div class="workspace-actions">
+            <span id="refreshStatus" class="refresh-status" aria-live="polite">Loading notes…</span>
+            <button id="refreshButton" class="icon-button" type="button" aria-label="Refresh notes" title="Refresh notes">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M16.2 8a6.5 6.5 0 0 0-11.7-2L3 8m0-4v4h4M3.8 12a6.5 6.5 0 0 0 11.7 2L17 12m0 4v-4h-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button id="newNoteButton" class="button-primary" type="button">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+              <span>New note</span>
+            </button>
+          </div>
+        </header>
+
+        <div class="workspace-layout">
+          <section id="notesPanel" class="notes-panel" aria-labelledby="notes-heading">
+            <div class="notes-panel-head">
+              <div>
+                <h2 id="notes-heading">All notes</h2>
+                <p id="noteCount" class="note-count">Loading…</p>
+              </div>
+            </div>
+            <div class="notes-tools">
+              <label class="search-wrap">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.8" cy="8.8" r="5.4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m13 13 3.8 3.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                <span class="sr-only">Search notes</span>
+                <input id="noteSearch" type="search" placeholder="Search notes" autocomplete="off" aria-controls="notesList">
+              </label>
+              <label class="sort-wrap">
+                <span class="sr-only">Sort notes</span>
+                <select id="noteSort">
+                  <option value="updated">Recently updated</option>
+                  <option value="title">Title A–Z</option>
+                </select>
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 8 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </label>
+            </div>
+
+            <p id="selectionOutside" class="selection-outside" role="status" hidden>
+              The open note is outside these results.
+              <button id="showSelectedButton" type="button">Clear search</button>
+            </p>
+            <div id="refreshError" class="inline-message" role="alert" hidden>
+              <span>Couldn’t refresh notes. The notes already on screen are still available.</span>
+              <button id="refreshRetryButton" type="button">Try again</button>
+            </div>
+            <div id="loadingState" class="list-state" role="status">Loading notes…</div>
+            <div id="loadError" class="list-state list-error" role="alert" hidden>
+              <p>Couldn’t load notes from the shared workspace.</p>
+              <button id="retryButton" class="text-button" type="button">Try again</button>
+            </div>
+            <ul id="notesList" class="notes-list" aria-label="Saved notes"></ul>
+            <div id="noNotes" class="list-state empty-list" hidden>
+              <h3>Your notebook is ready.</h3>
+              <p>Start with a method, an observation, or a result worth keeping.</p>
+              <button id="noNotesNewButton" class="text-button" type="button">Write the first note</button>
+            </div>
+            <div id="noResults" class="list-state empty-list" hidden>
+              <h3>No matching notes</h3>
+              <p>Try another title or phrase.</p>
+              <button id="clearSearchButton" class="text-button" type="button">Clear search</button>
+            </div>
+          </section>
+
+          <section id="editorPanel" class="editor-panel" aria-label="Note editor">
+            <div id="editorEmpty" class="editor-empty">
+              <div class="editor-empty-mark" aria-hidden="true">
+                <svg viewBox="0 0 40 48"><path d="M8 3.75h15.5L34 14.2v27a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V6.75a3 3 0 0 1 3-3Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M23 4v11h10M12 24h15M12 30h15M12 36h9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <h2 id="editorEmptyHeading">Let an idea take root.</h2>
+              <p>Your observations, half-formed ideas, and next big discoveries belong here.</p>
+              <button id="emptyNewButton" class="button-primary" type="button">Write something</button>
+            </div>
+
+            <form id="editorForm" class="editor-form" novalidate hidden>
+              <div class="editor-toolbar">
+                <button id="backButton" class="back-button" type="button">
+                  <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m12.5 4.5-5.5 5.5 5.5 5.5M7.5 10h9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <span>All notes</span>
+                </button>
+                <div class="editor-actions">
+                  <span id="saveState" class="save-state" role="status" aria-live="polite">All changes saved</span>
+                  <button id="deleteButton" class="button-delete" type="button" hidden>Delete</button>
+                  <button id="saveButton" class="button-primary" type="submit" disabled>Save note</button>
+                </div>
+              </div>
+              <div id="saveError" class="save-error" role="alert" hidden></div>
+              <div class="note-meta-row">
+                <span id="noteKind" class="note-kind">Note</span>
+                <span id="noteMeta" class="note-meta"></span>
+              </div>
+              <div class="title-field">
+                <label class="sr-only" for="noteTitle">Note title</label>
+                <input id="noteTitle" type="text" placeholder="Untitled note" autocomplete="off" aria-describedby="saveError" required>
+              </div>
+              <div class="body-heading">
+                <label for="noteContent">Note</label>
+                <span id="wordCount" class="word-count">0 words</span>
+              </div>
+              <textarea id="noteContent" spellcheck="true" placeholder="Write down the detail you’ll want to find again…" aria-describedby="saveError" required></textarea>
+              <div class="editor-footer">
+                <span id="payloadStatus" class="payload-status">0 / 32,768 bytes</span>
+                <span>Plain text</span>
+              </div>
+            </form>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <dialog id="recoveryDialog" class="recovery-dialog" aria-labelledby="recoveryTitle">
+      <div class="dialog-header">
+        <div>
+          <h2 id="recoveryTitle">Recovery demo</h2>
+          <p>Practice restoring a saved snapshot of this notebook.</p>
+        </div>
+        <button id="recoveryClose" class="icon-button dialog-close" type="button" aria-label="Close recovery demo">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <ol class="recovery-steps">
+        <li><span>Save the notes you want to keep in Folio.</span></li>
+        <li><span>From the project root, create a backup: <code>./scripts/backup.sh</code></span></li>
+        <li><span>Edit or delete a note, then list available snapshots: <code>./scripts/list-backups.sh</code></span></li>
+        <li><span>Restore the key you chose: <code>./scripts/restore.sh KEY</code></span></li>
+        <li><span>Refresh this page to load the restored notes.</span></li>
+      </ol>
+      <p class="recovery-warning">Restoring replaces the entire database with the chosen snapshot. Changes made after that backup are lost.</p>
+      <p class="recovery-note">Backup and restore commands run in a terminal; this dialog does not trigger them.</p>
+      <div class="dialog-actions"><button id="recoveryDone" class="button-primary" type="button">Got it</button></div>
+    </dialog>
+
+    <div id="announcement" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+  </body>
+</html>

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { once } from 'node:events';
 import { test } from 'node:test';
 import { IncomingMessage, ServerResponse } from 'node:http';
 import { Duplex } from 'node:stream';
@@ -35,6 +36,26 @@ const pool = {
 };
 
 const app = createApp(pool);
+
+test('serves the Folio page and assets over HTTP', async () => {
+  const server = app.listen(0, '127.0.0.1');
+  await once(server, 'listening');
+  const { port } = server.address();
+  try {
+    for (const [path, contentType] of [
+      ['/', /^text\/html(?:;|$)/],
+      ['/styles.css', /^text\/css(?:;|$)/],
+      ['/app.js', /^(?:text|application)\/javascript(?:;|$)/],
+    ]) {
+      const response = await fetch(`http://127.0.0.1:${port}${path}`);
+      assert.equal(response.status, 200, path);
+      assert.match(response.headers.get('content-type') || '', contentType, path);
+      assert.ok((await response.text()).length > 0, path);
+    }
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});
 
 async function request(path, { method = 'GET', headers = {}, body } = {}) {
   const socket = new Duplex({ read() {}, write(_chunk, _encoding, callback) { callback(); } });

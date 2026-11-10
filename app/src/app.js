@@ -1,7 +1,9 @@
 import express from 'express';
+import { fileURLToPath } from 'node:url';
 
 export function createApp(pool) {
   const app = express();
+  app.use(express.static(fileURLToPath(new URL('../public/', import.meta.url))));
   app.use(express.json({ limit: '32kb' }));
 
   app.get('/health', async (_req, res) => {

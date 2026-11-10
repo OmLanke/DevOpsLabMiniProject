@@ -62,7 +62,7 @@ class SVG:
 def make_stack():
     s=SVG(900,500,"Technology stack")
     s.text(450,50,"Technology stack",size=29,bold=True)
-    cards=[(35,"Application","Node.js 24\nExpress 5 + pg"),(212,"Database","PostgreSQL 17\nnotes database"),(389,"Backup","Python + boto3\npg_dump / pg_restore"),(566,"Object storage","MinIO\nS3-compatible API"),(743,"Automation","Docker Compose\nGitHub Actions")]
+    cards=[(35,"Application","Folio browser UI\nExpress 5 + pg"),(212,"Database","PostgreSQL 17\nnotes database"),(389,"Backup","Python + boto3\npg_dump\npg_restore"),(566,"Object storage","MinIO\nS3-compatible\nobject API"),(743,"Automation","Docker Compose\nGitHub Actions")]
     for x,title,body in cards:
         s.rect(x,145,150,190,fill="#ffffff")
         s.rect(x,145,150,47,title,fill=FILL,size=20,bold=True)
@@ -74,12 +74,12 @@ def make_stack():
 def make_architecture():
     s=SVG(900,620,"High-level system architecture")
     s.text(450,40,"High-level system architecture",size=28,bold=True)
-    s.boundary(22,65,230,220,"LOCAL HOST BOUNDARY")
-    s.rect(48,115,170,58,"Client\nlocalhost",size=18)
-    s.rect(48,205,170,58,"Express Notes API\n127.0.0.1:3000",size=18)
-    s.line(133,173,133,205); s.text(151,193,"HTTP",size=15,anchor="start")
+    s.boundary(22,65,230,220,"LOCAL ACCESS")
+    s.rect(48,115,170,58,"Browser: Folio UI\nlocalhost",size=18)
+    s.rect(48,205,170,58,"Express UI + API\n127.0.0.1:3000",size=18)
+    s.line(133,173,133,205); s.text(151,193,"same-origin HTTP",size=13,anchor="start")
     s.rect(315,110,185,78,"PostgreSQL 17\nnotes",size=20)
-    s.rect(315,260,185,78,"Backup worker\npg_dump + manifest",size=20)
+    s.rect(315,260,185,78,"Backup worker\npg_dump\n+ manifest",size=18)
     s.cylinder(625,105,205,90,"postgres_data\nvolume",size=18)
     s.cylinder(625,390,205,90,"minio_data\nvolume",size=18)
     s.cylinder(625,250,205,95,"MinIO\nversioned bucket",size=20)

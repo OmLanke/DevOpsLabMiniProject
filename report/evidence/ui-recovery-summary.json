@@ -1,0 +1,67 @@
+{
+  "verifiedAt": "2026-11-10T20:05:46.955Z",
+  "project": "folio-report-1794341106276",
+  "backupKey": "backups/2026-11-10/20261110T200522Z-e393761ff0934ec59f8d21efc64345c1.dump",
+  "secondBackupKey": "backups/2026-11-10/20261110T200522Z-e1898e236e304a84b816d62b957eaee8.dump",
+  "manifest": {
+    "application_version": "dev",
+    "database": "notes",
+    "file_name": "20261110T200522Z-e393761ff0934ec59f8d21efc64345c1.dump",
+    "key": "backups/2026-11-10/20261110T200522Z-e393761ff0934ec59f8d21efc64345c1.dump",
+    "sha256": "28dd431031d8bced14ced9589848dc93789cbb5aed134a835b3d229c5fbfb05d",
+    "size_bytes": 3181,
+    "timestamp": "2026-11-10T20:05:22.150957+00:00"
+  },
+  "before": [
+    {
+      "id": "1",
+      "title": "Database recovery lab",
+      "content": "Objective\nRecover our shared notebook after accidental data loss.\n\nMethod\nSave notes in Folio, create a backup, change the records, then restore the selected snapshot.\n\nExpected result\nThe original titles, content, IDs and timestamps return exactly.",
+      "created_at": "2026-11-10T20:05:21.181Z",
+      "updated_at": "2026-11-10T20:05:21.181Z"
+    },
+    {
+      "id": "2",
+      "title": "Presentation checklist",
+      "content": "Before the demo\nOpen Folio and save the lab observations.\nCreate a verified PostgreSQL backup in MinIO.\n\nDuring the demo\nEdit one note and delete another.\nRemove only the isolated database volume.\nRestore the selected backup and compare every field.",
+      "created_at": "2026-11-10T20:05:21.281Z",
+      "updated_at": "2026-11-10T20:05:21.281Z"
+    }
+  ],
+  "changed": [
+    {
+      "id": "1",
+      "title": "Changed after backup",
+      "content": "This content was saved after the selected backup.\nIt must be replaced by the original lab observations when that snapshot is restored.",
+      "created_at": "2026-11-10T20:05:21.181Z",
+      "updated_at": "2026-11-10T20:05:24.386Z"
+    },
+    {
+      "id": "3",
+      "title": "Post-backup note",
+      "content": "Created after the recovery point. This note must disappear when the earlier snapshot is restored.",
+      "created_at": "2026-11-10T20:05:24.601Z",
+      "updated_at": "2026-11-10T20:05:24.601Z"
+    }
+  ],
+  "restored": [
+    {
+      "id": "1",
+      "title": "Database recovery lab",
+      "content": "Objective\nRecover our shared notebook after accidental data loss.\n\nMethod\nSave notes in Folio, create a backup, change the records, then restore the selected snapshot.\n\nExpected result\nThe original titles, content, IDs and timestamps return exactly.",
+      "created_at": "2026-11-10T20:05:21.181Z",
+      "updated_at": "2026-11-10T20:05:21.181Z"
+    },
+    {
+      "id": "2",
+      "title": "Presentation checklist",
+      "content": "Before the demo\nOpen Folio and save the lab observations.\nCreate a verified PostgreSQL backup in MinIO.\n\nDuring the demo\nEdit one note and delete another.\nRemove only the isolated database volume.\nRestore the selected backup and compare every field.",
+      "created_at": "2026-11-10T20:05:21.281Z",
+      "updated_at": "2026-11-10T20:05:21.281Z"
+    }
+  ],
+  "emptyPublicTables": 0,
+  "exactMatch": true,
+  "recoverySeconds": 7.58,
+  "browserErrors": []
+}

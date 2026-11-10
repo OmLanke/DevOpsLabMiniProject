@@ -1,0 +1,509 @@
+Folio browser recovery demonstration
+2026-11-10T20:05:06.276Z
+
+$ docker compose --env-file /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/.env.example --project-name folio-report-1794341106276 -f /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/docker-compose.yml -f /tmp/folio-report-1794341106276.yml up -d --no-build --wait
+ Network folio-report-1794341106276_default Creating 
+ Volume folio-report-1794341106276_postgres_data Creating 
+ Volume folio-report-1794341106276_postgres_data Creating 
+ Network folio-report-1794341106276_default Creating 
+ Volume folio-report-1794341106276_minio_data Creating 
+ Volume folio-report-1794341106276_minio_data Creating 
+ Volume folio-report-1794341106276_postgres_data Created 
+ Volume folio-report-1794341106276_postgres_data Created 
+ Volume folio-report-1794341106276_minio_data Created 
+ Volume folio-report-1794341106276_minio_data Created 
+ Network folio-report-1794341106276_default Created 
+ Network folio-report-1794341106276_default Created 
+ Container folio-report-1794341106276-postgres-1 Creating 
+ Container folio-report-1794341106276-minio-1 Creating 
+ Container folio-report-1794341106276-minio-1 Created 
+ Container folio-report-1794341106276-postgres-1 Created 
+ Container folio-report-1794341106276-app-1 Creating 
+ Container folio-report-1794341106276-app-1 Created 
+ Container folio-report-1794341106276-backup-1 Creating 
+ Container folio-report-1794341106276-backup-1 Created 
+ Container folio-report-1794341106276-postgres-1 Starting 
+ Container folio-report-1794341106276-minio-1 Starting 
+ Container folio-report-1794341106276-minio-1 Started 
+ Container folio-report-1794341106276-postgres-1 Started 
+ Container folio-report-1794341106276-postgres-1 Waiting 
+ Container folio-report-1794341106276-postgres-1 Healthy 
+ Container folio-report-1794341106276-app-1 Starting 
+ Container folio-report-1794341106276-app-1 Started 
+ Container folio-report-1794341106276-app-1 Waiting 
+ Container folio-report-1794341106276-postgres-1 Waiting 
+ Container folio-report-1794341106276-minio-1 Waiting 
+ Container folio-report-1794341106276-postgres-1 Healthy 
+ Container folio-report-1794341106276-minio-1 Healthy 
+ Container folio-report-1794341106276-app-1 Healthy 
+ Container folio-report-1794341106276-backup-1 Starting 
+ Container folio-report-1794341106276-backup-1 Started 
+ Container folio-report-1794341106276-postgres-1 Waiting 
+ Container folio-report-1794341106276-app-1 Waiting 
+ Container folio-report-1794341106276-minio-1 Waiting 
+ Container folio-report-1794341106276-backup-1 Waiting 
+ Container folio-report-1794341106276-app-1 Healthy 
+ Container folio-report-1794341106276-postgres-1 Healthy 
+ Container folio-report-1794341106276-backup-1 Healthy 
+ Container folio-report-1794341106276-minio-1 Healthy 
+Isolated four-service stack is healthy: folio-report-1794341106276
+
+$ docker compose --env-file /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/.env.example --project-name folio-report-1794341106276 -f /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/docker-compose.yml -f /tmp/folio-report-1794341106276.yml port app 3000
+127.0.0.1:32780
+Captured 01-workspace.png
+Captured 02-search.png
+Captured 03-mobile.png
+Captured 04-before-backup.png
+
+$ docker compose --env-file /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/.env.example --project-name folio-report-1794341106276 -f /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/docker-compose.yml -f /tmp/folio-report-1794341106276.yml run --no-deps --rm -T backup backup
+backups/2026-11-10/20261110T200522Z-e393761ff0934ec59f8d21efc64345c1.dump
+ Container folio-report-1794341106276-backup-run-41b88f7bdda2 Creating 
+ Container folio-report-1794341106276-backup-run-41b88f7bdda2 Created 
+2026-11-10 20:05:22,151 INFO creating PostgreSQL dump for database notes
+2026-11-10 20:05:22,227 INFO uploaded backups/2026-11-10/20261110T200522Z-e393761ff0934ec59f8d21efc64345c1.dump (3181 bytes, sha256 28dd431031d8bced14ced9589848dc93789cbb5aed134a835b3d229c5fbfb05d)
+
+$ docker compose --env-file /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/.env.example --project-name folio-report-1794341106276 -f /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/docker-compose.yml -f /tmp/folio-report-1794341106276.yml run --no-deps --rm -T backup backup
+backups/2026-11-10/20261110T200522Z-e1898e236e304a84b816d62b957eaee8.dump
+ Container folio-report-1794341106276-backup-run-8fb79c925011 Creating 
+ Container folio-report-1794341106276-backup-run-8fb79c925011 Created 
+2026-11-10 20:05:22,851 INFO creating PostgreSQL dump for database notes
+2026-11-10 20:05:22,920 INFO uploaded backups/2026-11-10/20261110T200522Z-e1898e236e304a84b816d62b957eaee8.dump (3181 bytes, sha256 28dd431031d8bced14ced9589848dc93789cbb5aed134a835b3d229c5fbfb05d)
+
+$ docker compose --env-file /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/.env.example --project-name folio-report-1794341106276 -f /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/docker-compose.yml -f /tmp/folio-report-1794341106276.yml run --no-deps --rm -T backup list
+2026-11-10T20:05:22.914000+00:00	3181	backups/2026-11-10/20261110T200522Z-e1898e236e304a84b816d62b957eaee8.dump
+2026-11-10T20:05:22.221000+00:00	3181	backups/2026-11-10/20261110T200522Z-e393761ff0934ec59f8d21efc64345c1.dump
+2026-11-10T20:05:18.411000+00:00	2801	backups/2026-11-10/20261110T200518Z-f397071ae00f4c1dade76a7e8fee31e9.dump
+ Container folio-report-1794341106276-backup-run-19abbb61a8c9 Creating 
+ Container folio-report-1794341106276-backup-run-19abbb61a8c9 Created 
+2026-11-10 20:05:23,644 INFO listed 3 backups
+
+$ docker compose --env-file /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/.env.example --project-name folio-report-1794341106276 -f /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/docker-compose.yml -f /tmp/folio-report-1794341106276.yml run --no-deps --rm -T --entrypoint python backup -c import hashlib,json,os,sys,boto3
+s=boto3.client('s3',endpoint_url=os.environ['S3_ENDPOINT_URL']); b=os.environ['BACKUP_BUCKET']; k=sys.argv[1]
+m=json.loads(s.get_object(Bucket=b,Key=k[:-5]+'.json')['Body'].read()); d=s.get_object(Bucket=b,Key=k)['Body'].read()
+assert s.get_bucket_versioning(Bucket=b)['Status']=='Enabled'
+assert m['key']==k and m['size_bytes']==len(d) and m['sha256']==hashlib.sha256(d).hexdigest()
+print(json.dumps(m)) backups/2026-11-10/20261110T200522Z-e393761ff0934ec59f8d21efc64345c1.dump
+{"application_version": "dev", "database": "notes", "file_name": "20261110T200522Z-e393761ff0934ec59f8d21efc64345c1.dump", "key": "backups/2026-11-10/20261110T200522Z-e393761ff0934ec59f8d21efc64345c1.dump", "sha256": "28dd431031d8bced14ced9589848dc93789cbb5aed134a835b3d229c5fbfb05d", "size_bytes": 3181, "timestamp": "2026-11-10T20:05:22.150957+00:00"}
+ Container folio-report-1794341106276-backup-run-f203ca2ff98a Creating 
+ Container folio-report-1794341106276-backup-run-f203ca2ff98a Created 
+Verified both backup keys, bucket versioning, archive size and SHA-256.
+Captured 05-after-changes.png
+Edited one note, deleted the checklist and created a post-backup note using Folio.
+
+$ docker compose --env-file /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/.env.example --project-name folio-report-1794341106276 -f /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/docker-compose.yml -f /tmp/folio-report-1794341106276.yml stop app backup
+ Container folio-report-1794341106276-backup-1 Stopping 
+ Container folio-report-1794341106276-backup-1 Stopped 
+ Container folio-report-1794341106276-app-1 Stopping 
+ Container folio-report-1794341106276-app-1 Stopped 
+
+$ docker compose --env-file /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/.env.example --project-name folio-report-1794341106276 -f /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/docker-compose.yml -f /tmp/folio-report-1794341106276.yml ps -q postgres
+83ca701bda15abc5d94031edb0b23dc270c9b3cb00ca357733f2a94d6594d1e2
+
+$ docker inspect 83ca701bda15abc5d94031edb0b23dc270c9b3cb00ca357733f2a94d6594d1e2
+[
+    {
+        "Id": "83ca701bda15abc5d94031edb0b23dc270c9b3cb00ca357733f2a94d6594d1e2",
+        "Created": "2026-11-10T20:05:06.813882085Z",
+        "Path": "docker-entrypoint.sh",
+        "Args": [
+            "postgres"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 42024,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-11-10T20:05:07.081289163Z",
+            "FinishedAt": "0001-01-01T00:00:00Z",
+            "Health": {
+                "Status": "healthy",
+                "FailingStreak": 0,
+                "Log": [
+                    {
+                        "Start": "2026-11-11T01:35:12.081432723+05:30",
+                        "End": "2026-11-11T01:35:12.132034078+05:30",
+                        "ExitCode": 0,
+                        "Output": "/var/run/postgresql:5432 - accepting connections\n"
+                    },
+                    {
+                        "Start": "2026-11-11T01:35:17.135940886+05:30",
+                        "End": "2026-11-11T01:35:17.175851275+05:30",
+                        "ExitCode": 0,
+                        "Output": "/var/run/postgresql:5432 - accepting connections\n"
+                    },
+                    {
+                        "Start": "2026-11-11T01:35:22.176876565+05:30",
+                        "End": "2026-11-11T01:35:22.197755009+05:30",
+                        "ExitCode": 0,
+                        "Output": "/var/run/postgresql:5432 - accepting connections\n"
+                    }
+                ]
+            }
+        },
+        "Image": "sha256:b0f9560a2de083e2cc7382e75f808c7381a32852a7ec49117deedb300e552b24",
+        "ResolvConfPath": "/var/lib/docker/containers/83ca701bda15abc5d94031edb0b23dc270c9b3cb00ca357733f2a94d6594d1e2/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/83ca701bda15abc5d94031edb0b23dc270c9b3cb00ca357733f2a94d6594d1e2/hostname",
+        "HostsPath": "/var/lib/docker/containers/83ca701bda15abc5d94031edb0b23dc270c9b3cb00ca357733f2a94d6594d1e2/hosts",
+        "LogPath": "/var/lib/docker/containers/83ca701bda15abc5d94031edb0b23dc270c9b3cb00ca357733f2a94d6594d1e2/83ca701bda15abc5d94031edb0b23dc270c9b3cb00ca357733f2a94d6594d1e2-json.log",
+        "Name": "/folio-report-1794341106276-postgres-1",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "folio-report-1794341106276_postgres_data:/var/lib/postgresql/data:rw"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {
+                    "max-file": "5",
+                    "max-size": "20m"
+                }
+            },
+            "NetworkMode": "folio-report-1794341106276_default",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "unless-stopped",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": null,
+            "DnsSearch": null,
+            "ExtraHosts": [],
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 3141533696,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [
+            {
+                "Type": "volume",
+                "Name": "folio-report-1794341106276_postgres_data",
+                "Source": "/var/lib/docker/volumes/folio-report-1794341106276_postgres_data/_data",
+                "Destination": "/var/lib/postgresql/data",
+                "Driver": "local",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": ""
+            }
+        ],
+        "Config": {
+            "Hostname": "83ca701bda15",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "ExposedPorts": {
+                "5432/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "POSTGRES_DB=notes",
+                "POSTGRES_USER=notes",
+                "POSTGRES_PASSWORD=local-notes-password-change-me",
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "GOSU_VERSION=1.19",
+                "LANG=en_US.utf8",
+                "PG_MAJOR=17",
+                "PG_VERSION=17.11",
+                "PG_SHA256=dd27f2b3c59e73ed14aa3324901242bf69a032a6347805f274e6260322d42979",
+                "DOCKER_PG_LLVM_DEPS=llvm21-dev \t\tclang21",
+                "PGDATA=/var/lib/postgresql/data"
+            ],
+            "Cmd": [
+                "postgres"
+            ],
+            "Healthcheck": {
+                "Test": [
+                    "CMD-SHELL",
+                    "pg_isready -U \"${POSTGRES_USER}\" -d \"${POSTGRES_DB}\""
+                ],
+                "Interval": 5000000000,
+                "Timeout": 3000000000,
+                "StartPeriod": 5000000000,
+                "Retries": 12
+            },
+            "Image": "postgres:17-alpine",
+            "Volumes": {
+                "/var/lib/postgresql/data": {}
+            },
+            "WorkingDir": "/",
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "Labels": {
+                "com.docker.compose.config-hash": "b51c4715899fd040bf9d4e54e73bfd64f4e5974ad9b42d0deaf9a8b8f7993aff",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "",
+                "com.docker.compose.image": "sha256:0b2882c46a2b8d8e148431b333394348cf4d7f15aec6df7f17d51dc641e56cfa",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "folio-report-1794341106276",
+                "com.docker.compose.project.config_files": "/Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/docker-compose.yml,/tmp/folio-report-1794341106276.yml",
+                "com.docker.compose.project.environment_file": "/Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/.env.example",
+                "com.docker.compose.project.working_dir": "/Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject",
+                "com.docker.compose.service": "postgres",
+                "com.docker.compose.version": "5.5.0"
+            },
+            "StopSignal": "SIGINT"
+        },
+        "NetworkSettings": {
+            "SandboxID": "9b5e6042187f255b604ed307a91a0be525d7c6917f1b259e7ab8dc3ffd66bc6a",
+            "SandboxKey": "/var/run/docker/netns/9b5e6042187f",
+            "Ports": {
+                "5432/tcp": null
+            },
+            "Networks": {
+                "folio-report-1794341106276_default": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "folio-report-1794341106276-postgres-1",
+                        "postgres"
+                    ],
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "5ba98f2d49043c924c0d5444f664d67ee4a9ab95a42d7c24eb0ed1dbafb15dfe",
+                    "EndpointID": "841e12ecfb7e7b00d35552aa700403c4b103bf2ea43315665024525abdb27070",
+                    "Gateway": "192.168.107.1",
+                    "IPAddress": "192.168.107.3",
+                    "MacAddress": "22:0f:dd:d4:aa:1a",
+                    "IPPrefixLen": 24,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "folio-report-1794341106276-postgres-1",
+                        "postgres",
+                        "83ca701bda15"
+                    ]
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:0b2882c46a2b8d8e148431b333394348cf4d7f15aec6df7f17d51dc641e56cfa",
+            "size": 2869,
+            "annotations": {
+                "com.docker.official-images.bashbrew.arch": "arm64v8",
+                "org.opencontainers.image.base.digest": "sha256:260479a1cfaf304c4c20da7f8405d3ce313513dcd534bb743257bdd2fe0f3e2d",
+                "org.opencontainers.image.base.name": "alpine:3.24",
+                "org.opencontainers.image.created": "2026-09-17T21:29:09Z",
+                "org.opencontainers.image.revision": "2603e26e245e558218728ee14e0a42dcb020dc7f",
+                "org.opencontainers.image.source": "https://github.com/docker-library/postgres.git#2603e26e245e558218728ee14e0a42dcb020dc7f:17/alpine3.24",
+                "org.opencontainers.image.url": "https://hub.docker.com/_/postgres",
+                "org.opencontainers.image.version": "17.11-alpine3.24"
+            },
+            "platform": {
+                "architecture": "arm64",
+                "os": "linux",
+                "variant": "v8"
+            }
+        }
+    }
+]
+
+$ docker volume inspect folio-report-1794341106276_postgres_data
+[
+    {
+        "CreatedAt": "2026-11-11T01:35:06+05:30",
+        "Driver": "local",
+        "Labels": {
+            "com.docker.compose.config-hash": "89be74b00ae90a89cc8b12e69c50c86596fb4ccd9b636dfa54be8a342a2b1316",
+            "com.docker.compose.project": "folio-report-1794341106276",
+            "com.docker.compose.version": "5.5.0",
+            "com.docker.compose.volume": "postgres_data"
+        },
+        "Mountpoint": "/var/lib/docker/volumes/folio-report-1794341106276_postgres_data/_data",
+        "Name": "folio-report-1794341106276_postgres_data",
+        "Options": null,
+        "Scope": "local"
+    }
+]
+
+$ docker compose --env-file /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/.env.example --project-name folio-report-1794341106276 -f /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/docker-compose.yml -f /tmp/folio-report-1794341106276.yml stop postgres
+ Container folio-report-1794341106276-postgres-1 Stopping 
+ Container folio-report-1794341106276-postgres-1 Stopped 
+
+$ docker compose --env-file /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/.env.example --project-name folio-report-1794341106276 -f /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/docker-compose.yml -f /tmp/folio-report-1794341106276.yml rm --force postgres
+Going to remove folio-report-1794341106276-postgres-1
+ Container folio-report-1794341106276-postgres-1 Removing 
+ Container folio-report-1794341106276-postgres-1 Removed 
+
+$ docker volume rm folio-report-1794341106276_postgres_data
+folio-report-1794341106276_postgres_data
+Deleted owner-checked isolated PostgreSQL volume; MinIO backup volume retained.
+
+$ docker compose --env-file /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/.env.example --project-name folio-report-1794341106276 -f /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/docker-compose.yml -f /tmp/folio-report-1794341106276.yml up -d --wait postgres
+ Volume folio-report-1794341106276_postgres_data Creating 
+ Volume folio-report-1794341106276_postgres_data Creating 
+ Volume folio-report-1794341106276_postgres_data Created 
+ Volume folio-report-1794341106276_postgres_data Created 
+ Container folio-report-1794341106276-postgres-1 Creating 
+ Container folio-report-1794341106276-postgres-1 Created 
+ Container folio-report-1794341106276-postgres-1 Starting 
+ Container folio-report-1794341106276-postgres-1 Started 
+ Container folio-report-1794341106276-postgres-1 Waiting 
+ Container folio-report-1794341106276-postgres-1 Healthy 
+
+$ docker compose --env-file /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/.env.example --project-name folio-report-1794341106276 -f /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/docker-compose.yml -f /tmp/folio-report-1794341106276.yml exec -T postgres psql -U notes -d notes -Atc SELECT COUNT(*) FROM pg_tables WHERE schemaname='public';
+0
+Fresh PostgreSQL database has zero public application tables.
+
+$ docker compose --env-file /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/.env.example --project-name folio-report-1794341106276 -f /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/docker-compose.yml -f /tmp/folio-report-1794341106276.yml up -d --wait app
+ Container folio-report-1794341106276-postgres-1 Running 
+ Container folio-report-1794341106276-postgres-1 Waiting 
+ Container folio-report-1794341106276-postgres-1 Healthy 
+ Container folio-report-1794341106276-app-1 Starting 
+ Container folio-report-1794341106276-app-1 Started 
+ Container folio-report-1794341106276-app-1 Waiting 
+ Container folio-report-1794341106276-postgres-1 Waiting 
+ Container folio-report-1794341106276-postgres-1 Healthy 
+ Container folio-report-1794341106276-app-1 Healthy 
+
+$ docker compose --env-file /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/.env.example --project-name folio-report-1794341106276 -f /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/docker-compose.yml -f /tmp/folio-report-1794341106276.yml port app 3000
+127.0.0.1:32781
+Captured 06-empty-database.png
+
+$ docker compose --env-file /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/.env.example --project-name folio-report-1794341106276 -f /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/docker-compose.yml -f /tmp/folio-report-1794341106276.yml stop app
+ Container folio-report-1794341106276-app-1 Stopping 
+ Container folio-report-1794341106276-app-1 Stopped 
+
+$ docker compose --env-file /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/.env.example --project-name folio-report-1794341106276 -f /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/docker-compose.yml -f /tmp/folio-report-1794341106276.yml run --no-deps --rm -T backup restore backups/2026-11-10/20261110T200522Z-e393761ff0934ec59f8d21efc64345c1.dump --yes
+ Container folio-report-1794341106276-backup-run-85a968d4d02b Creating 
+ Container folio-report-1794341106276-backup-run-85a968d4d02b Created 
+2026-11-10 20:05:39,935 INFO verified backups/2026-11-10/20261110T200522Z-e393761ff0934ec59f8d21efc64345c1.dump; restoring database notes
+2026-11-10 20:05:39,974 INFO restore completed from backups/2026-11-10/20261110T200522Z-e393761ff0934ec59f8d21efc64345c1.dump
+
+$ docker compose --env-file /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/.env.example --project-name folio-report-1794341106276 -f /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/docker-compose.yml -f /tmp/folio-report-1794341106276.yml up -d --wait app
+ Container folio-report-1794341106276-postgres-1 Running 
+ Container folio-report-1794341106276-postgres-1 Waiting 
+ Container folio-report-1794341106276-postgres-1 Healthy 
+ Container folio-report-1794341106276-app-1 Starting 
+ Container folio-report-1794341106276-app-1 Started 
+ Container folio-report-1794341106276-postgres-1 Waiting 
+ Container folio-report-1794341106276-app-1 Waiting 
+ Container folio-report-1794341106276-postgres-1 Healthy 
+ Container folio-report-1794341106276-app-1 Healthy 
+
+$ docker compose --env-file /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/.env.example --project-name folio-report-1794341106276 -f /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/docker-compose.yml -f /tmp/folio-report-1794341106276.yml port app 3000
+127.0.0.1:32782
+Captured 07-restored.png
+PASS: Original notes, IDs, content, created_at and updated_at recovered exactly.
+Captured 08-verification.png
+Browser recovery evidence complete.
+
+$ docker compose --env-file /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/.env.example --project-name folio-report-1794341106276 -f /Users/omlanke/Documents/Programming/GitHub/DevOpsLabMiniProject/docker-compose.yml -f /tmp/folio-report-1794341106276.yml down --volumes --remove-orphans
+ Container folio-report-1794341106276-backup-1 Stopping 
+ Container folio-report-1794341106276-backup-1 Stopped 
+ Container folio-report-1794341106276-backup-1 Removing 
+ Container folio-report-1794341106276-backup-1 Removed 
+ Container folio-report-1794341106276-app-1 Stopping 
+ Container folio-report-1794341106276-minio-1 Stopping 
+ Container folio-report-1794341106276-minio-1 Stopped 
+ Container folio-report-1794341106276-minio-1 Removing 
+ Container folio-report-1794341106276-minio-1 Removed 
+ Container folio-report-1794341106276-app-1 Stopped 
+ Container folio-report-1794341106276-app-1 Removing 
+ Container folio-report-1794341106276-app-1 Removed 
+ Container folio-report-1794341106276-postgres-1 Stopping 
+ Container folio-report-1794341106276-postgres-1 Stopped 
+ Container folio-report-1794341106276-postgres-1 Removing 
+ Container folio-report-1794341106276-postgres-1 Removed 
+ Network folio-report-1794341106276_default Removing 
+ Volume folio-report-1794341106276_minio_data Removing 
+ Volume folio-report-1794341106276_postgres_data Removing 
+ Volume folio-report-1794341106276_minio_data Removed 
+ Volume folio-report-1794341106276_postgres_data Removed 
+ Network folio-report-1794341106276_default Removed 
+Removed isolated demonstration containers and volumes.

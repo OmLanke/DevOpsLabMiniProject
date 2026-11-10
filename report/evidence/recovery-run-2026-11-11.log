@@ -1,0 +1,259 @@
+Running the isolated disaster-recovery demonstration. Its temporary Compose volumes are removed on exit.
+Starting isolated PostgreSQL, API, MinIO, and backup worker...
+ Image notes-dr-29928-1794340835-app Building 
+ Image notes-dr-29928-1794340835-minio Building 
+ Image notes-dr-29928-1794340835-backup Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.69kB done
+#1 DONE 0.0s
+
+#2 [app internal] load build definition from Dockerfile
+#2 transferring dockerfile: 204B done
+#2 DONE 0.0s
+
+#3 [backup internal] load build definition from Dockerfile
+#3 transferring dockerfile: 479B done
+#3 DONE 0.0s
+
+#4 [minio internal] load build definition from Dockerfile
+#4 transferring dockerfile: 880B done
+#4 DONE 0.0s
+
+#5 [backup internal] load metadata for docker.io/library/postgres:17-bookworm
+#5 DONE 0.1s
+
+#6 [minio internal] load metadata for docker.io/library/alpine:3.22
+#6 DONE 0.1s
+
+#7 [backup internal] load .dockerignore
+#7 transferring context: 64B done
+#7 DONE 0.0s
+
+#8 [backup internal] load build context
+#8 transferring context: 31B done
+#8 DONE 0.0s
+
+#9 [backup 1/4] FROM docker.io/library/postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826
+#9 resolve docker.io/library/postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826 0.0s done
+#9 DONE 0.0s
+
+#10 [backup 3/4] WORKDIR /opt/backup
+#10 CACHED
+
+#11 [backup 2/4] RUN apt-get update     && apt-get install -y --no-install-recommends python3 python3-venv     && python3 -m venv /opt/backup-venv     && /opt/backup-venv/bin/pip install --no-cache-dir --timeout=120 boto3     && rm -rf /var/lib/apt/lists/*
+#11 CACHED
+
+#12 [backup 4/4] COPY backup.py .
+#12 CACHED
+
+#13 [backup] exporting to image
+#13 exporting layers done
+#13 exporting manifest sha256:d68a186177dbe1e4fd3c2407598815501380caed8c33b73a7991db35ae104ccc 0.0s done
+#13 exporting config sha256:a67433ab4f0023f367c57c7d9e1c140f4589b1afcb536f375cfb4710a31fc78f 0.0s done
+#13 exporting attestation manifest sha256:f49b4c5bac745b75f767766c9172aebf676ce4d391348489f5b8514fe5480df1 0.0s done
+#13 exporting manifest list sha256:642f96a978ff77b39a69c1316eb00dc2afb0f92a3df8b8adb7e8c21c6f016030 0.0s done
+#13 naming to docker.io/library/notes-dr-29928-1794340835-backup:latest done
+#13 unpacking to docker.io/library/notes-dr-29928-1794340835-backup:latest done
+#13 DONE 0.1s
+
+#14 [minio internal] load metadata for docker.io/library/golang:1.24-alpine
+#14 ...
+
+#15 [backup] resolving provenance for metadata file
+#15 DONE 0.0s
+
+#16 [app internal] load metadata for docker.io/library/node:24-alpine
+#16 ...
+
+#17 [auth] library/node:pull token for registry-1.docker.io
+#17 DONE 0.0s
+
+#18 [auth] library/golang:pull token for registry-1.docker.io
+#18 DONE 0.0s
+
+#14 [minio internal] load metadata for docker.io/library/golang:1.24-alpine
+#14 DONE 1.7s
+
+#16 [app internal] load metadata for docker.io/library/node:24-alpine
+#16 ...
+
+#19 [minio internal] load .dockerignore
+#19 transferring context: 2B done
+#19 DONE 0.0s
+
+#20 [minio build 3/4] ADD --checksum=sha256:484788a73bd0b93e1c99ca3e7b3c2584e9936986da857dca8a1d1a9fe4418d3b https://codeload.github.com/minio/minio/tar.gz/refs/tags/RELEASE.2025-02-07T23-21-09Z /tmp/minio.tar.gz
+#20 DONE 0.0s
+
+#21 [minio stage-1 1/4] FROM docker.io/library/alpine:3.22@sha256:5291449c3df73caf6ed85e649dec1b9e818b39a5d8c871e97afc13e9cd5e8fa8
+#21 resolve docker.io/library/alpine:3.22@sha256:5291449c3df73caf6ed85e649dec1b9e818b39a5d8c871e97afc13e9cd5e8fa8 0.0s done
+#21 DONE 0.0s
+
+#22 [minio build 1/4] FROM docker.io/library/golang:1.24-alpine@sha256:8bee1901f1e530bfb4a7850aa7a479d17ae3a18beb6e09064ed54cfd245b7191
+#22 resolve docker.io/library/golang:1.24-alpine@sha256:8bee1901f1e530bfb4a7850aa7a479d17ae3a18beb6e09064ed54cfd245b7191 0.0s done
+#22 DONE 0.1s
+
+#23 [minio build 4/4] RUN tar -xzf /tmp/minio.tar.gz --strip-components=1     && CGO_ENABLED=0 go build -trimpath        -ldflags='-s -w -X github.com/minio/minio/cmd.Version=2025-02-07T23:21:09Z -X github.com/minio/minio/cmd.ReleaseTag=RELEASE.2025-02-07T23-21-09Z'        -o /minio .
+#23 CACHED
+
+#24 [minio stage-1 3/4] COPY --from=build /minio /usr/local/bin/minio
+#24 CACHED
+
+#25 [minio stage-1 2/4] RUN apk add --no-cache ca-certificates curl
+#25 CACHED
+
+#26 [minio build 2/4] WORKDIR /src
+#26 CACHED
+
+#27 [minio build 3/4] ADD --checksum=sha256:484788a73bd0b93e1c99ca3e7b3c2584e9936986da857dca8a1d1a9fe4418d3b https://codeload.github.com/minio/minio/tar.gz/refs/tags/RELEASE.2025-02-07T23-21-09Z /tmp/minio.tar.gz
+#27 CACHED
+
+#28 [minio stage-1 4/4] COPY --from=build /src/LICENSE /licenses/MINIO-LICENSE
+#28 CACHED
+
+#29 [minio] exporting to image
+#29 exporting layers done
+#29 exporting manifest sha256:15b206129d67ca5ef4707ea5bb8d712f91a5c94cbdc62381f8d65bbb79775174 0.0s done
+#29 exporting config sha256:92175feaaec382ab8f1803ecb0d38d0f4df5f526339e98946e3cdaad52614aa2 0.0s done
+#29 exporting attestation manifest sha256:f27c60d8b7fd92a5cf25c4fdb737ebb1b49c572e9655ffb9624ef32008e515eb 0.0s done
+#29 exporting manifest list sha256:457a88749bd9600781fe6e3613aa3f1a1fcef4a2fbe788ef15b11d88266a8148 0.0s done
+#29 naming to docker.io/library/notes-dr-29928-1794340835-minio:latest done
+#29 unpacking to docker.io/library/notes-dr-29928-1794340835-minio:latest done
+#29 DONE 0.1s
+
+#30 [minio] resolving provenance for metadata file
+#30 DONE 0.0s
+
+#16 [app internal] load metadata for docker.io/library/node:24-alpine
+#16 DONE 2.1s
+
+#31 [app internal] load .dockerignore
+#31 transferring context: 64B done
+#31 DONE 0.0s
+
+#32 [app internal] load build context
+#32 transferring context: 461B done
+#32 DONE 0.0s
+
+#33 [app 1/6] FROM docker.io/library/node:24-alpine@sha256:a34ab6d7f6f4813f4d0c5469d74685604b962fbdbf5793a7bc7b4998ecb867c8
+#33 resolve docker.io/library/node:24-alpine@sha256:a34ab6d7f6f4813f4d0c5469d74685604b962fbdbf5793a7bc7b4998ecb867c8 0.0s done
+#33 DONE 0.0s
+
+#34 [app 2/6] WORKDIR /app
+#34 CACHED
+
+#35 [app 4/6] RUN npm ci --omit=dev
+#35 CACHED
+
+#36 [app 5/6] COPY src ./src
+#36 CACHED
+
+#37 [app 3/6] COPY package*.json ./
+#37 CACHED
+
+#38 [app 6/6] COPY public ./public
+#38 CACHED
+
+#39 [app] exporting to image
+#39 exporting layers done
+#39 exporting manifest sha256:28a2e00a152b54a3c61d9b053c45d74b059929d3c5a4ef3889b1b9fbc102d2aa 0.0s done
+#39 exporting config sha256:12cc96769da85c7be9ff8126dc6ac3ac76c3b169024afa6070a8e0adf3af2e40 0.0s done
+#39 exporting attestation manifest sha256:4712b98a370a635dd3d2561dc9a0c2b5143726e2d6b97f48ab2f93da011ae4ac
+#39 exporting attestation manifest sha256:4712b98a370a635dd3d2561dc9a0c2b5143726e2d6b97f48ab2f93da011ae4ac 0.0s done
+#39 exporting manifest list sha256:f70d719a74bb593d39097d400291133b4fa676edad08c227a32bc149c8679a6e 0.0s done
+#39 naming to docker.io/library/notes-dr-29928-1794340835-app:latest done
+#39 unpacking to docker.io/library/notes-dr-29928-1794340835-app:latest done
+#39 DONE 0.1s
+
+#40 [app] resolving provenance for metadata file
+#40 DONE 0.0s
+ Image notes-dr-29928-1794340835-app Built 
+ Image notes-dr-29928-1794340835-minio Built 
+ Image notes-dr-29928-1794340835-backup Built 
+ Volume notes-dr-29928-1794340835_postgres_data Creating 
+ Volume notes-dr-29928-1794340835_postgres_data Creating 
+ Network notes-dr-29928-1794340835_default Creating 
+ Network notes-dr-29928-1794340835_default Creating 
+ Volume notes-dr-29928-1794340835_minio_data Creating 
+ Volume notes-dr-29928-1794340835_minio_data Creating 
+ Volume notes-dr-29928-1794340835_postgres_data Created 
+ Volume notes-dr-29928-1794340835_postgres_data Created 
+ Volume notes-dr-29928-1794340835_minio_data Created 
+ Volume notes-dr-29928-1794340835_minio_data Created 
+ Network notes-dr-29928-1794340835_default Created 
+ Network notes-dr-29928-1794340835_default Created 
+ Container notes-dr-29928-1794340835-minio-1 Creating 
+ Container notes-dr-29928-1794340835-postgres-1 Creating 
+ Container notes-dr-29928-1794340835-minio-1 Created 
+ Container notes-dr-29928-1794340835-postgres-1 Created 
+ Container notes-dr-29928-1794340835-app-1 Creating 
+ Container notes-dr-29928-1794340835-app-1 Created 
+ Container notes-dr-29928-1794340835-backup-1 Creating 
+ Container notes-dr-29928-1794340835-backup-1 Created 
+ Container notes-dr-29928-1794340835-postgres-1 Starting 
+ Container notes-dr-29928-1794340835-minio-1 Starting 
+ Container notes-dr-29928-1794340835-postgres-1 Started 
+ Container notes-dr-29928-1794340835-postgres-1 Waiting 
+ Container notes-dr-29928-1794340835-minio-1 Started 
+ Container notes-dr-29928-1794340835-postgres-1 Healthy 
+ Container notes-dr-29928-1794340835-app-1 Starting 
+ Container notes-dr-29928-1794340835-app-1 Started 
+ Container notes-dr-29928-1794340835-app-1 Waiting 
+ Container notes-dr-29928-1794340835-postgres-1 Waiting 
+ Container notes-dr-29928-1794340835-minio-1 Waiting 
+ Container notes-dr-29928-1794340835-minio-1 Healthy 
+ Container notes-dr-29928-1794340835-postgres-1 Healthy 
+ Container notes-dr-29928-1794340835-app-1 Healthy 
+ Container notes-dr-29928-1794340835-backup-1 Starting 
+ Container notes-dr-29928-1794340835-backup-1 Started 
+Browser notes workspace and assets are served by the container.
+Created two notes to preserve.
+Original snapshot: [{"content": "original-one", "created_at": "2026-11-10T20:00:49.823Z", "id": "1", "title": "Recover me", "updated_at": "2026-11-10T20:00:49.823Z"}, {"content": "original-two", "created_at": "2026-11-10T20:00:49.828Z", "id": "2", "title": "Also recover me", "updated_at": "2026-11-10T20:00:49.828Z"}]
+Creating a logical backup and checking the stored object list...
+ Container notes-dr-29928-1794340835-backup-run-0231d6a159c6 Creating 
+ Container notes-dr-29928-1794340835-backup-run-0231d6a159c6 Created 
+2026-11-10 20:00:50,323 INFO creating PostgreSQL dump for database notes
+2026-11-10 20:00:50,389 INFO uploaded backups/2026-11-10/20261110T200050Z-0c44916889024d8fb2762e3e6b000ee5.dump (2882 bytes, sha256 bc38bf0ae6b92a433d2df15661b92b1e3bbd87aaa8430ff19bfaac97926b3673)
+ Container notes-dr-29928-1794340835-backup-run-1d572e4262b8 Creating 
+ Container notes-dr-29928-1794340835-backup-run-1d572e4262b8 Created 
+2026-11-10 20:00:50,922 INFO creating PostgreSQL dump for database notes
+2026-11-10 20:00:50,979 INFO uploaded backups/2026-11-10/20261110T200050Z-f4f862830df8405282a94e74ac97f7f1.dump (2882 bytes, sha256 bc38bf0ae6b92a433d2df15661b92b1e3bbd87aaa8430ff19bfaac97926b3673)
+ Container notes-dr-29928-1794340835-backup-run-aac305b09a79 Creating 
+ Container notes-dr-29928-1794340835-backup-run-aac305b09a79 Created 
+2026-11-10 20:00:51,566 INFO listed 3 backups
+ Container notes-dr-29928-1794340835-backup-run-83c59c946df2 Creating 
+ Container notes-dr-29928-1794340835-backup-run-83c59c946df2 Created 
+Backup object, manifest, checksum, and bucket versioning verified.
+Verified manifest: {"application_version": "dev", "database": "notes", "file_name": "20261110T200050Z-0c44916889024d8fb2762e3e6b000ee5.dump", "key": "backups/2026-11-10/20261110T200050Z-0c44916889024d8fb2762e3e6b000ee5.dump", "sha256": "bc38bf0ae6b92a433d2df15661b92b1e3bbd87aaa8430ff19bfaac97926b3673", "size_bytes": 2882, "timestamp": "2026-11-10T20:00:50.323668+00:00"}
+Backup stored: backups/2026-11-10/20261110T200050Z-0c44916889024d8fb2762e3e6b000ee5.dump
+Changed and deleted data after backup.
+Stopping writers and simulating database loss...
+ Container notes-dr-29928-1794340835-backup-1 Stopping 
+ Container notes-dr-29928-1794340835-backup-1 Stopped 
+ Container notes-dr-29928-1794340835-app-1 Stopping 
+ Container notes-dr-29928-1794340835-app-1 Stopped 
+ Container notes-dr-29928-1794340835-postgres-1 Stopping 
+ Container notes-dr-29928-1794340835-postgres-1 Stopped 
+ Container notes-dr-29928-1794340835-postgres-1 Removing 
+ Container notes-dr-29928-1794340835-postgres-1 Removed 
+Deleted the isolated PostgreSQL volume; MinIO backups remain intact.
+ Volume notes-dr-29928-1794340835_postgres_data Creating 
+ Volume notes-dr-29928-1794340835_postgres_data Creating 
+ Volume notes-dr-29928-1794340835_postgres_data Created 
+ Volume notes-dr-29928-1794340835_postgres_data Created 
+ Container notes-dr-29928-1794340835-postgres-1 Creating 
+ Container notes-dr-29928-1794340835-postgres-1 Created 
+ Container notes-dr-29928-1794340835-postgres-1 Starting 
+ Container notes-dr-29928-1794340835-postgres-1 Started 
+Verified that the fresh database contains no application tables.
+Restoring the selected backup after checksum verification...
+ Container notes-dr-29928-1794340835-backup-run-3ccb2d7b0f8b Creating 
+ Container notes-dr-29928-1794340835-backup-run-3ccb2d7b0f8b Created 
+2026-11-10 20:00:56,759 INFO verified backups/2026-11-10/20261110T200050Z-0c44916889024d8fb2762e3e6b000ee5.dump; restoring database notes
+2026-11-10 20:00:56,792 INFO restore completed from backups/2026-11-10/20261110T200050Z-0c44916889024d8fb2762e3e6b000ee5.dump
+ Container notes-dr-29928-1794340835-postgres-1 Running 
+ Container notes-dr-29928-1794340835-postgres-1 Waiting 
+ Container notes-dr-29928-1794340835-postgres-1 Healthy 
+ Container notes-dr-29928-1794340835-app-1 Starting 
+ Container notes-dr-29928-1794340835-app-1 Started 
+Disaster recovery passed: the original notes, IDs, and timestamps are back exactly.
+Recovered snapshot: [{"content": "original-one", "created_at": "2026-11-10T20:00:49.823Z", "id": "1", "title": "Recover me", "updated_at": "2026-11-10T20:00:49.823Z"}, {"content": "original-two", "created_at": "2026-11-10T20:00:49.828Z", "id": "2", "title": "Also recover me", "updated_at": "2026-11-10T20:00:49.828Z"}]

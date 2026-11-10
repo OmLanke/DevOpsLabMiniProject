@@ -28,6 +28,10 @@ for attempt in $(seq 1 60); do
   if (( attempt == 60 )); then echo 'API did not become healthy.' >&2; exit 1; fi
   sleep 2
 done
+curl -fsS "$app_url/" >/dev/null
+curl -fsS "$app_url/styles.css" >/dev/null
+curl -fsS "$app_url/app.js" >/dev/null
+echo 'Browser notes workspace and assets are served by the container.'
 
 python3 - "$app_url" "$snapshot" <<'PY'
 import json, sys, urllib.request

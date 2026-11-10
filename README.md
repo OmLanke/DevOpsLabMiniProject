@@ -6,7 +6,7 @@ A small DevOps lab project showing how a database-backed application can create 
 
 ```mermaid
 flowchart LR
-    Client -->|HTTP| App[Express Notes API]
+    Client -->|HTTP| App[Folio UI + Notes API]
     App -->|SQL| DB[(PostgreSQL 17<br/>persistent volume)]
     DB -->|logical snapshot| Worker[Backup worker<br/>pg_dump]
     Worker -->|dump + SHA-256 manifest| S3[(MinIO<br/>versioned bucket<br/>persistent volume)]
@@ -14,13 +14,13 @@ flowchart LR
     Restore --> DB
 ```
 
-The Notes API creates realistic database state. The backup container runs `pg_dump` in PostgreSQL custom format with compression, hashes the result, and uploads the dump and a JSON manifest under a unique UTC key. MinIO bucket versioning is enabled automatically. The restore command downloads the chosen dump, checks its manifest, size, and SHA-256 checksum, then applies it in a single PostgreSQL transaction.
+Express serves Folio, the browser workspace, and its PostgreSQL-backed Notes API. The backup container runs `pg_dump` in PostgreSQL custom format with compression, hashes the result, and uploads the dump and a JSON manifest under a unique UTC key. MinIO bucket versioning is enabled automatically. The restore command downloads the chosen dump, checks its manifest, size, and SHA-256 checksum, then applies it in a single PostgreSQL transaction.
 
 MinIO is built locally from its checksum-verified `RELEASE.2025-02-07T23-21-09Z` source archive because the original public image is no longer pullable. Its S3 API, console, and data volume remain the same. The first uncached build includes Go compilation and needs internet access.
 
 | Component | Role |
 | --- | --- |
-| Node.js 24, Express, `pg` | Small REST API and PostgreSQL client |
+| Node.js 24, Express, `pg` | Folio browser workspace, REST API, and PostgreSQL client |
 | PostgreSQL 17 | Notes database and logical dump source/target |
 | Docker Compose | Local services, readiness checks, and persistent volumes |
 | MinIO (verified-source build) | Local S3-compatible backup bucket with versioning enabled |
@@ -29,7 +29,7 @@ MinIO is built locally from its checksum-verified `RELEASE.2025-02-07T23-21-09Z`
 
 ## Start locally
 
-For a short presentation, see the [five-minute demo and speaking script](DEMO.md), including an introduction, commands, and recovery talking points.
+For a short presentation, see the [seven-minute demo and speaking script](DEMO.md), including an introduction, commands, and recovery talking points.
 
 Prerequisites: Docker Engine with the Compose plugin, `curl`, and Python 3 for the integration demo.
 
@@ -45,6 +45,8 @@ Compose waits for PostgreSQL, MinIO, and the API health checks before starting t
 docker compose ps
 curl http://localhost:3000/health
 ```
+
+Open <http://localhost:3000> to use **Folio**, the browser notes workspace. Search and sort notes, create a note, select one to edit, then save or delete it. Changes use the same PostgreSQL-backed API described below. There is no login; Compose binds the app to localhost by default, so this workspace is for local use.
 
 The API listens only on the local machine by default and has no authentication; it is intended for a local lab. Its routes are:
 
@@ -190,7 +192,7 @@ Authors: **Om Lanke — 16010123216** and **Saish Korgaonkar — 16010123294**.
 
 The report follows the supplied sample's academic layout, institution header, red sidebar, numbered chapters, tables, and grayscale diagrams. It explains the problem before the implementation and includes the actual recovered data and manifest. The supplied sample is preserved.
 
-Local verification on 14 October 2026 passed all **4 API tests and 13 Python tests**, Compose validation, image builds, and exact recovery after deletion of the isolated PostgreSQL volume. The updated API dependency audit reports zero advisories. Remote GitHub Actions execution and production container security were not tested.
+Local verification on 11 November 2026 passed **5 application tests and 13 Python tests**, Compose validation, the existing recovery demo, and a browser-driven Folio recovery exercise after isolated PostgreSQL-volume loss. The 36-page report includes eight live application/recovery screenshots and verified page references. The Node dependency audit reports zero advisories. Remote GitHub Actions execution and production container security were not tested.
 
 ## License
 

@@ -1,7 +1,10 @@
 {
-  "pages": 28,
-  "indexed_labels": 70,
-  "figures": 9,
+  "verified_at": "2026-11-10T20:14:58.719435+00:00",
+  "pages": 36,
+  "indexed_labels": 79,
+  "figures": 17,
+  "diagrams": 9,
+  "screenshots": 8,
   "tables": 12,
   "authors": [
     "Om Lanke — 16010123216",
@@ -9,5 +12,19 @@
   ],
   "page_reference_check": "passed",
   "visible_text_bounds": "passed",
-  "docx_schema_validation": "passed"
+  "docx_schema_validation": "passed",
+  "visual_review": "All 36 pages reviewed; final manifest correction inspected and remaining 35 page images confirmed unchanged.",
+  "recovery_exact_match": true,
+  "screenshot_sha256": {
+    "01-workspace.png": "10022971b1e751c9cf4c4fe3abbee56ed150c43b30555ad3e9e4a9f2ee8131a7",
+    "02-search.png": "451302b45636adcc5db082001c42c9bfa5869c2797a04aa1e7d86582291125d7",
+    "03-mobile.png": "24fcf5a0f60729271d7c925a246d8c9c7ea647f354338133507d7ca8f86819bf",
+    "04-before-backup.png": "5ca832612fba4d1ded985fae3cb4494b68a6ff751acb58c94a22a038df8b1641",
+    "05-after-changes.png": "387cb0b00551a3bb928928e563bb1f2bbb26189f3940af93769815804ab3deee",
+    "06-empty-database.png": "9b9afc5172c628d6ac13a85fbfc3f80500111a70a12dfcf53350a51dbb083887",
+    "07-restored.png": "6e050b304b912f54dfabcdb334e3ea181dc4381a1afd5f38b86848978ae50846",
+    "08-verification.png": "c8f5361c11fb4ff6bd9a7492aaca1113aeb3650c89dee5ff347d67ddb1ad74cb"
+  },
+  "docx_sha256": "57ad3a3690fa425748b5f822fe911b49386467deee3912c9d39291ae044a3d3c",
+  "pdf_sha256": "e80267c3b35b04d95f60ea2ff46ceebafdb5f4e01dec78e841c115b25d41cdfe"
 }

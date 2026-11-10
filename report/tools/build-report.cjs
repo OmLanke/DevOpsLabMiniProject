@@ -23,7 +23,7 @@ const anchors = new Map([...headings, ...figures.map(f => f.caption), ...tables.
 
 assert.equal(content.metadata.authors[0].student_id, '16010123216');
 assert.equal(content.metadata.authors[1].student_id, '16010123294');
-assert.equal(figures.length, 9);
+assert.equal(figures.length, 17);
 assert.equal(new Set(figures.map(f => f.caption)).size, figures.length);
 assert.equal(new Set(tables.map(t => t.caption)).size, tables.length);
 
@@ -154,7 +154,7 @@ for (const chapter of content.chapters) {
         shading: { fill: 'F5F5F5', type: ShadingType.CLEAR }, spacing: { line: 230, after: 0, before: i === 0 ? 80 : 0 },
         children: [new TextRun({ text, font: 'Courier New', size: 18 })] })), para('', { spacing: { after: 30, line: 40 } })); break;
       case 'figure': body.push(new Paragraph({ alignment: AlignmentType.CENTER, keepNext: true,
-        spacing: { before: 120, after: 0 }, children: [png(`diagrams/${block.file}.png`, block.width || 570)] }), caption(block.caption)); break;
+        spacing: { before: 120, after: 0 }, children: [png(block.path || `diagrams/${block.file}.png`, block.width || 570)] }), caption(block.caption)); break;
       case 'table': body.push(caption(block.caption, true), grid(block), para('', { spacing: { after: 40, line: 40 } })); break;
       default: throw new Error(`Unknown report block: ${block.type}`);
     }

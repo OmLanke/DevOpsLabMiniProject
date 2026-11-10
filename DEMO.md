@@ -1,6 +1,6 @@
-# Five-minute local demo and speaking script
+# Seven-minute local demo and speaking script
 
-Target: **5 minutes**. Allow up to 2 extra minutes for questions or slower container startup.
+Target: **7 minutes**. Allow extra time for slower container startup or questions.
 
 ## Before presenting
 
@@ -19,6 +19,7 @@ For a fresh checkout, first run `cp .env.example .env` (only if `.env` does not 
 Keep these ready:
 
 - A terminal in this project folder, with readable font size.
+- A browser tab open to <http://localhost:3000> for Folio.
 - This script on a second screen or beside the terminal.
 - Optional: MinIO at <http://localhost:9001>. Log in beforehand using the MinIO credentials in `.env`; open `notes-backups`. Keep credentials off the projector.
 - Optional: `.github/workflows/ci.yml` and `.github/workflows/backup.yml` in your editor.
@@ -44,11 +45,34 @@ curl -fsS http://localhost:3000/health
 
 **Say:**
 
-“There are four services managed by Docker Compose. An Express Notes API stores records in PostgreSQL. A Python worker uses pg_dump to create compressed logical backups and uploads them to MinIO, our local S3-compatible storage.
+“There are four services managed by Docker Compose. Express serves Folio, the browser workspace, alongside the Notes API that stores records in PostgreSQL. A Python worker uses pg_dump to create compressed logical backups and uploads them to MinIO, our local S3-compatible storage.
 
 “Each backup has a unique timestamped name and a JSON manifest containing its size and SHA-256 checksum. Bucket versioning is also enabled. The worker backs up immediately on startup, then waits five minutes after each attempt.”
 
-## 1:20–3:40 — Run the recovery demonstration
+## 1:20–2:45 — Create and recover a note in Folio
+
+**In the browser:**
+
+1. Create and save a note titled `Folio recovery demo` with the content `Created in the browser before backup.`
+2. In the terminal, create a backup of the normal local stack and keep its key:
+
+```sh
+BACKUP_KEY=$(./scripts/backup.sh)
+printf 'Selected backup: %s\n' "$BACKUP_KEY"
+```
+
+3. Edit that note in Folio, change its content, and save. Show the updated note in the workspace.
+4. Restore the selected snapshot:
+
+```sh
+./scripts/restore.sh "$BACKUP_KEY"
+```
+
+Type `restore` at the prompt. The wrapper stops the app and backup worker during recovery, then restarts services that were running. Reload Folio: the saved note has its original content again.
+
+> **Restore replaces database objects with the selected snapshot. Changes made after that backup are lost. Use a demo note and restore only when you intend to discard later changes.**
+
+## 2:45–5:45 — Run the isolated disaster-recovery demonstration
 
 **Run once:**
 
@@ -79,7 +103,7 @@ grep -E 'Original snapshot:|Verified manifest:|Deleted the isolated|fresh databa
 
 If the command finishes early, use the remaining time to compare the original and recovered snapshots. The printed success assertion is the evidence; the grep command only highlights it.
 
-## 3:40–4:25 — Automation and stored backups
+## 5:45–6:30 — Automation and stored backups
 
 **Run:**
 
@@ -95,7 +119,7 @@ If the command finishes early, use the remaining time to compare the original an
 
 Optionally show the already-open MinIO bucket or workflow files. Do not wait five minutes for a scheduled worker backup during the presentation. Do not claim a remote workflow passed unless you have its actual result.
 
-## 4:25–5:00 — Conclusion and limitations
+## 6:30–7:00 — Conclusion and limitations
 
 **Say:**
 
